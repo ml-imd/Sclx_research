@@ -137,6 +137,9 @@ def export(path, method, k = None, seed = None, label_col = None, parameters = {
         parameters["random_state"] = seed
     cluster_method = cluster(method, parameters)
     cluster_method.fit(dataset)
+    scores = getScores(dataset, cluster_method.labels_)
+    print("Silhouette: " + str(scores[0]))
+    print("Davies Bouldin: " + str(scores[1]))
     if(method == "SpectralBiclustering" or method == "SpectralCoclustering"):
         dataframe["cluster"] = cluster_method.row_labels_
     else:
@@ -160,10 +163,4 @@ def analyzeAll(path, k_range, seed_values, label_col = None):
         analyze(path, method, file_name, k_range = k_range, label_col = label_col, parameters = {})
     for method in have_none:
         analyze(path, method, file_name, label_col = label_col, parameters = {})
-
-
-# In[10]:
-
-
-export("Scikit_scylax_rn_p3v2.csv", "DBSCAN", parameters = {"eps":0.9,"min_samples":6})
 
