@@ -21,16 +21,18 @@ def writeData(eps, m_points, n_clusters):
     file.close()
 
 
-# In[14]:
+# In[12]:
 
 
 def dbscanLoop(path, max_eps = 10, max_m_points = 30):
     dataset = readData(path)
+    dbscan = DBSCAN()
     for epsi in np.arange(0.2, (max_eps + 0.2), 0.2):
         for m_points in range(2, (max_m_points + 2), 2):
-            dbscan = DBSCAN(eps = epsi, min_samples = m_points)
+            dbscan.set_params(**{"eps" : epsi, "min_samples" : m_points})
             dbscan.fit(dataset)
-            n_clusters = len(set(dbscan.labels_)) - (1 if -1 in dbscan.labels_ else 0)
+            clusters = set(dbscan.labels_)
+            n_clusters = len(clusters) - (1 if -1 in clusters else 0)
             writeData(str(epsi), str(m_points), str(n_clusters))
 
 
@@ -38,7 +40,4 @@ def dbscanLoop(path, max_eps = 10, max_m_points = 30):
 
 
 dbscanLoop("Scikit_scylax_rn_p3v2.csv")
-
-
-
 
