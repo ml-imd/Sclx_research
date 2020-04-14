@@ -121,17 +121,16 @@ def analyze(path, method, file_name, parameters = {}, k_range = None, seed_value
 # In[8]:
 
 
-def export(path, method, k = None, seed = None, label_col = None):
+def export(path, method, k = None, seed = None, label_col = None, parameters = {}):
     if(k is not None and seed is not None):
-        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + '_' + str(k) + '_' + str(seed) + ".csv"
+        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + '_' + str(k) + '_' + str(seed) + '.csv'
     elif(k is not None and seed is None):
-        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + '_' + str(k) + ".csv"
+        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + '_' + str(k) + '.csv'
     elif(k is None and seed is not None):
-        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + '_' + str(seed) + ".csv"
+        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + '_' + str(seed) + '.csv'
     else:
-        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + ".csv"
+        file_name = "exported" + '_' + fileNameFromPath(path) + '_' + method + '.csv'
     dataset, dataframe = readData(path, label_col, True)
-    parameters = {}
     if(k is not None):
         parameters["n_clusters"] = k
     if(seed is not None):
@@ -163,9 +162,8 @@ def analyzeAll(path, k_range, seed_values, label_col = None):
         analyze(path, method, file_name, label_col = label_col, parameters = {})
 
 
-# In[11]:
+# In[10]:
 
 
-analyzeAll("iris.csv", (2, 6), (1, 5, 7, 13), "variety")
-export("iris.csv", "KMeans", 3, 1, "variety")
+export("Scikit_scylax_rn_p3v2.csv", "DBSCAN", parameters = {"eps":0.9,"min_samples":6})
 
