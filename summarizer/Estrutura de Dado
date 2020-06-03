@@ -1,0 +1,18 @@
+dict = {program : {A1 : 222, A2 : 999}, programa2 : {A1 : 29834, A2 : 23423}}
+
+
+pegue uma linha
+para x em programas {
+	verifique se x é uma chave no dicionario(true){
+		verificar se o qualis está no dicionario do programa(true){
+			adicionar um ao valor da chave do qualis
+		} else {
+			adicionar a chave ao dicionario e setar 1
+		}
+	} se não {
+		adiciona o programa com um dicionario vazio
+	}
+}
+
+# AAAAA : {A1 : 3, A2 : 6}
+# BBBBB : {A1 : 2, A2 : 5}
