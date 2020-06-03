@@ -11,24 +11,29 @@ def string_to_list(list_str, separator=',', delimiter='[]'):
 def file_name_from_path(path):
     head, tail = split(path)
     filename = tail or basename(head)
-    i = -1
-    while(filename[i] != '.'):
-      i -= 1
-    return filename[:i]
+    
+    if "." in filename:
+      i = -1
+      while(filename[i] != '.'):
+        i -= 1
+      filename = filename[:i]
+      
+    return filename
 
 def count_qualis_occurances_for_programs(src):
   dataframe = pd.read_csv(src)
-  programs_dict = {}
+  cluster_dict = {}
   programs_list = []
 
   for i in dataframe.index:
     qualis = dataframe["qualis"][i]
+    cluster = dataframe["Cluster"][i]
     programs_list = string_to_list(dataframe["programas"][i], separator='-')
     for program in programs_list:
-      if program in programs_dict:
-        programs_dict[program][qualis] += 1
-      else:
-        programs_dict[program] = {"A1": 0, 
+      if cluster not in cluster_dict:
+        cluster_dict[cluster] = {}
+      if program not in cluster_dict[cluster]:
+        cluster_dict[cluster][program] = {"A1": 0, 
                                   "A2": 0, 
                                   "A3": 0, 
                                   "A4": 0, 
@@ -37,7 +42,9 @@ def count_qualis_occurances_for_programs(src):
                                   "B3": 0, 
                                   "B4": 0, 
                                   "C/NI/NP": 0}
-  return programs_dict
+      cluster_dict[cluster][program][qualis] += 1
+      
+  return cluster_dict
 
 def dict_to_json(filename, dictionary):
   json_dict = json.dumps(dictionary)
@@ -51,11 +58,17 @@ def dict_from_json(src):
 
     return dictionary
 
-def make_dict(csv_file, json_filename = None):
-  if json_filename is None:
-    json_filename = file_name_from_path(csv_file) + ".json"
+def make_dict(csv_file, cluster_list = None):
+  cluster_dict = count_qualis_occurances_for_programs(csv_file)
 
-  dict_to_json(json_filename, count_qualis_occurances_for_programs(csv_file))
+  if cluster_list is None:
+    selected_clusters = cluster_dict
+  else:
+    selected_clusters = string_to_list(cluster_list, separator='-')
+
+  for cluster in selected_clusters:
+    filename = file_name_from_path(csv_file) + "_" + cluster + ".json"
+    dict_to_json(filename, cluster_dict[cluster])
 
 def make_qualis_count_list(dictionary):
   count_dict = {"A1": [], 
@@ -75,7 +88,7 @@ def make_qualis_count_list(dictionary):
 
 
 def plot_program(dict_src, program_code_list_str, image_name = None):
-  program_code_list = string_to_list(program_code_list_str)
+  program_code_list = string_to_list(program_code_list_str, separator="-")
   subdict = {key : value for key, value in dict_from_json(dict_src).items() if key in program_code_list}
   count_dict = make_qualis_count_list(subdict)
 

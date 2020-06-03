@@ -16,3 +16,6 @@ para x em programas {
 
 # AAAAA : {A1 : 3, A2 : 6}
 # BBBBB : {A1 : 2, A2 : 5}
+
+
+cluster_dict = {cluster1 : {programas : { A1:0 }}}
