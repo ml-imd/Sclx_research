@@ -12,7 +12,7 @@ def run(dataIn, dataOut):
     :param dataOut: the output name of the data frame.
     :return: a void return
     """
-    data = (dataIn, encoding='utf-8')
+    data = read_csv(dataIn, encoding='utf-8')
     columns = list(data.columns.values)
     new = DataFrame(columns=columns)
     for id, row in data.iterrows():
