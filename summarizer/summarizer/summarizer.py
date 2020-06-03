@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import json
 import sys
 
-def string_to_list(str):
-  return str.strip('][').split(",")
+def string_to_list(list_str, separator=',', delimiter='[]'):
+  return list_str.strip(delimiter).split(separator)
 
 def file_name_from_path(path):
     head, tail = split(path)
@@ -16,10 +16,6 @@ def file_name_from_path(path):
       i -= 1
     return filename[:i]
 
-def split_programs(programs):
-  programs = programs[1:-1]
-  return programs.split('-')
-
 def count_qualis_occurances_for_programs(src):
   dataframe = pd.read_csv(src)
   programs_dict = {}
@@ -27,7 +23,7 @@ def count_qualis_occurances_for_programs(src):
 
   for i in dataframe.index:
     qualis = dataframe["qualis"][i]
-    programs_list = split_programs(dataframe["programas"][i])
+    programs_list = string_to_list(dataframe["programas"][i], separator='-')
     for program in programs_list:
       if program in programs_dict:
         programs_dict[program][qualis] += 1
