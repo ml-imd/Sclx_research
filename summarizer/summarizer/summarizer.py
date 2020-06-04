@@ -34,15 +34,23 @@ def count_qualis_occurances_for_programs(src):
         cluster_dict[cluster] = {}
       if program not in cluster_dict[cluster]:
         cluster_dict[cluster][program] = {"A1": 0, 
-                                  "A2": 0, 
-                                  "A3": 0, 
-                                  "A4": 0, 
-                                  "B1": 0, 
-                                  "B2": 0, 
-                                  "B3": 0, 
-                                  "B4": 0, 
-                                  "C/NI/NP": 0}
+																					"A2": 0, 
+																					"A3": 0, 
+																					"A4": 0, 
+																					"B1": 0, 
+																					"B2": 0, 
+																					"B3": 0, 
+																					"B4": 0, 
+																					"C/NI/NP": 0,
+																					"total_A": 0,
+																					"total_B": 0,
+																					"total": 0}
       cluster_dict[cluster][program][qualis] += 1
+			cluster_dict[cluster][program]["total"] += 1
+			if qualis in ("A1", "A2", "A3", "A4"):
+				cluster_dict[cluster][program]["total_A"] += 1
+			elif qualis in ("B1", "B2", "B3", "B4"):
+				cluster_dict[cluster][program]["total_B"] += 1
       
   return cluster_dict
 
@@ -122,5 +130,10 @@ def plot_program(dict_src, program_code_list_str, image_name = None):
     image_name = file_name_from_path(dict_src) + "_" + str(program_code_list) + ".png"
   fig.savefig(image_name)
 
+"""
 if __name__ == '__main__':
   globals()[sys.argv[1]](*sys.argv[2:])
+"""
+
+cluster1 = count_qualis_occurances_for_programs("Particao_k3_c1.csv")["cluster1"]
+ordenados = sorted(cluster1, key=lambda programa : programa["total_A"])
