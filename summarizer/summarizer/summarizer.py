@@ -121,8 +121,8 @@ def plot_program(dict_src, program_code_list_str, image_name=None):
     x = np.arange(len(program_code_list))
     bar_width = 0.08
     multiplier = 0
-    colors = ["#0d340d", "#165816", "#32c732", "#48bfe3",
-              "#5e60ce", "#7400b8", "#4d0400", "#a80900", "#ff3d33"]
+    colors = ["#54c73a", "#abd216", "#ccce0f", "#f0f200",
+              "#ffce00", "#ff9a00", "#ff6700", "#ff3300", "#ff0000"]
 
     for qualis in count_dict:
         ax.bar(x + bar_width * multiplier, count_dict[qualis], width=bar_width, label=qualis,
@@ -149,8 +149,23 @@ def plot_program(dict_src, program_code_list_str, image_name=None):
             dict_src) + "_" + str(program_code_list) + ".png"
     fig.savefig(image_name)
 
+def plot_n_best(dict_src, n_str, image_name=None):
+    n = int(n_str)
+    program_code_list_str = "["
+    count = 0
 
-"""
+    for program in dict_from_json(dict_src):
+        if count == n:
+            break
+
+        if count != n-1:
+            program_code_list_str += program + '-'
+        else:
+            program_code_list_str += program + ']'
+
+        count += 1
+
+    plot_program(dict_src, program_code_list_str, image_name)
+
 if __name__ == '__main__':
   globals()[sys.argv[1]](*sys.argv[2:])
-"""
