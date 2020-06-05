@@ -23,7 +23,7 @@ def file_name_from_path(path):
     return filename
 
 
-def sort_programs_dict(cluster_dict, sort_by="total_A"):
+def sort_programs_dict(cluster_dict, sort_by="A1/A2/A3/A4"):
     for program in cluster_dict:
         cluster_dict[program] = dict(sorted(
             cluster_dict[program].items(), key=lambda item: item[1][sort_by], reverse=True))
@@ -53,16 +53,16 @@ def count_qualis_occurances_for_programs(src):
                                                   "B3": 0,
                                                   "B4": 0,
                                                   "C/NI/NP": 0,
-                                                  "total_A": 0,
-                                                  "total_B": 0,
+                                                  "A1/A2/A3/A4": 0,
+                                                  "B1/B2/B3/B4": 0,
                                                   "total": 0}
 
             cluster_dict[cluster][program][qualis] += 1
             cluster_dict[cluster][program]["total"] += 1
             if qualis in ("A1", "A2", "A3", "A4"):
-                cluster_dict[cluster][program]["total_A"] += 1
+                cluster_dict[cluster][program]["A1/A2/A3/A4"] += 1
             elif qualis in ("B1", "B2", "B3", "B4"):
-                cluster_dict[cluster][program]["total_B"] += 1
+                cluster_dict[cluster][program]["B1/B2/B3/B4"] += 1
 
     return sort_programs_dict(cluster_dict)
 
@@ -94,28 +94,21 @@ def make_dict(csv_file, cluster_list=None):
         dict_to_json(filename, cluster_dict[cluster])
 
 
-def make_qualis_count_list(dictionary):
-    count_dict = {"A1": [],
-                  "A2": [],
-                  "A3": [],
-                  "A4": [],
-                  "B1": [],
-                  "B2": [],
-                  "B3": [],
-                  "B4": [],
-                  "C/NI/NP": []}
+def make_values_dict_from_keys(dictionary, keys):
+    values_dict = {k: [] for k in keys}
+    
     for key in dictionary:
-        for qualis in count_dict:
-            count_dict[qualis].append(dictionary[key][qualis])
+        for value in values_dict:
+            values_dict[value].append(dictionary[key][value])
 
-    return count_dict
+    return values_dict
 
 
 def plot_program(dict_src, program_code_list_str, image_name=None):
     program_code_list = string_to_list(program_code_list_str, separator="-")
     subdict = {key: value for key, value in dict_from_json(
         dict_src).items() if key in program_code_list}
-    count_dict = make_qualis_count_list(subdict)
+    count_dict = make_values_dict_from_keys(subdict, ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C/NI/NP"])
 
     fig, ax = plt.subplots()
     x = np.arange(len(program_code_list))
@@ -146,10 +139,10 @@ def plot_program(dict_src, program_code_list_str, image_name=None):
 
     if image_name is None:
         image_name = "../results/" + file_name_from_path(
-            dict_src) + "_" + str(program_code_list) + ".png"
+            dict_src) + "_" + program_code_list_str + ".png"
     fig.savefig(image_name)
 
-def plot_n_best(dict_src, n_str, image_name=None):
+def plot_n_best(dict_src, n_str, compare_to=None, image_name=None):
     n = int(n_str)
     program_code_list_str = "["
     count = 0
@@ -161,11 +154,49 @@ def plot_n_best(dict_src, n_str, image_name=None):
         if count != n-1:
             program_code_list_str += program + '-'
         else:
-            program_code_list_str += program + ']'
+            program_code_list_str += program 
+            if compare_to is not None:
+                program_code_list_str += compare_to + ']'
+            else:
+                program_code_list_str += ']'
 
         count += 1
 
     plot_program(dict_src, program_code_list_str, image_name)
 
-if __name__ == '__main__':
-  globals()[sys.argv[1]](*sys.argv[2:])
+def plot_compare(dict_src, program_code_list_str, image_name=None):
+    program_code_list = string_to_list(program_code_list_str, separator="-")
+    subdict = {key: value for key, value in dict_from_json(
+        dict_src).items() if key in program_code_list}
+    count_dict = make_values_dict_from_keys(subdict, ["A1/A2/A3/A4", "B1/B2/B3/B4", "C/NI/NP"])
+
+    fig, ax = plt.subplots()
+    x = np.arange(len(program_code_list))
+    bar_width = 0.15
+    multiplier = 0
+    colors = ["#d6af36", "#a7a7ad", "#a77044"]
+
+    for rank in count_dict:
+        ax.bar(x + bar_width * multiplier, count_dict[rank], width=bar_width, label=rank,
+               color=colors[multiplier])
+        multiplier += 1
+
+    ax.set_xticks(x + bar_width)
+    ax.set_xticklabels(program_code_list)
+    ax.legend()
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.spines['bottom'].set_color('#DDDDDD')
+    ax.tick_params(bottom=False, left=False)
+    ax.set_axisbelow(True)
+    ax.yaxis.grid(True, color='#DDDDDD')
+    ax.set_title('Comparação entre programas')
+
+    fig.tight_layout()
+
+    if image_name is None:
+        image_name = "../results/" + file_name_from_path(
+            dict_src) + "_" + program_code_list_str + "_compare_" + ".png"
+    fig.savefig(image_name)
