@@ -4,7 +4,7 @@
 # In[1]:
 
 
-from script import readData
+from analyze_csv.Script import readData
 from sklearn.cluster import DBSCAN
 import numpy as np
 from os import stat

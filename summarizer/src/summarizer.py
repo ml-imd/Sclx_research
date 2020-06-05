@@ -90,7 +90,7 @@ def make_dict(csv_file, cluster_list=None):
         selected_clusters = string_to_list(cluster_list, separator='-')
 
     for cluster in selected_clusters:
-        filename = file_name_from_path(csv_file) + "_" + cluster + ".json"
+        filename = "../results/" + file_name_from_path(csv_file) + "_" + cluster + ".json"
         dict_to_json(filename, cluster_dict[cluster])
 
 
@@ -145,7 +145,7 @@ def plot_program(dict_src, program_code_list_str, image_name=None):
     fig.tight_layout()
 
     if image_name is None:
-        image_name = file_name_from_path(
+        image_name = "../results/" + file_name_from_path(
             dict_src) + "_" + str(program_code_list) + ".png"
     fig.savefig(image_name)
 

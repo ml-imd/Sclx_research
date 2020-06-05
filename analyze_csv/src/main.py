@@ -4,7 +4,7 @@
 # In[1]:
 
 
-from script import analyzeAll, export
+from Script import analyzeAll, export
 
 
 # In[2]:
