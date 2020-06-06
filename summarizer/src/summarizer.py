@@ -199,7 +199,44 @@ def plot_compare(dict_src, program_code_list_str, cluster, image_name=None):
             dict_src) + "_" + program_code_list_str + "_compare_" + ".png"
     fig.savefig(image_name)
 
+def plot_program_cluster(dict_src, program, image_name=None):
+    dictionary = dict_from_json(dict_src)
+    subdict = {key: dictionary[key][program] for key in dictionary if program in dictionary[key]}
+    count_dict = make_values_dict_from_keys(subdict, ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C/NI/NP"])
+
+    fig, ax = plt.subplots()
+    x = np.arange(len(subdict))
+    bar_width = 0.08
+    multiplier = 0
+    colors = ["#54c73a", "#abd216", "#ccce0f", "#f0f200",
+              "#ffce00", "#ff9a00", "#ff6700", "#ff3300", "#ff0000"]
+
+    for qualis in count_dict:
+        ax.bar(x + bar_width * multiplier, count_dict[qualis], width=bar_width, label=qualis,
+               color=colors[multiplier])
+        multiplier += 1
+
+    ax.set_xticks(x + 4 * bar_width)
+    ax.set_xticklabels(subdict.keys())
+    ax.legend()
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    ax.spines['bottom'].set_color('#DDDDDD')
+    ax.tick_params(bottom=False, left=False)
+    ax.set_axisbelow(True)
+    ax.yaxis.grid(True, color='#DDDDDD')
+    ax.set_title('Porcentagem de publicações por grupo')
+
+    fig.tight_layout()
+
+    if image_name is None:
+        image_name = "../results/" + file_name_from_path(
+            dict_src) + "_" + program + '_' + ".png"
+    fig.savefig(image_name)
 
 #make_dict("../datasets/Particao_k3_c1.csv")
 #plot_n_best("../results/Particao_k3_c1.json", 3, "cluster1", "23001011030P1")
 #plot_compare("../results/Particao_k3_c1.json", "[23001011010P0-23001011031P8-23001011020P6]", "cluster1")
+plot_program_cluster("../results/Particao_k3_c1.json", "23001011010P0")
