@@ -23,14 +23,14 @@ def file_name_from_path(path):
     return filename
 
 
-def sort_programs_dict(cluster_dict, sort_by="A1/A2/A3/A4"):
+def sort_programs_dict(cluster_dict, sort_by):
     for program in cluster_dict:
         cluster_dict[program] = dict(sorted(
             cluster_dict[program].items(), key=lambda item: item[1][sort_by], reverse=True))
     return cluster_dict
 
 
-def count_qualis_occurances_for_programs(src):
+def count_qualis_occurances_for_programs(src, sort_by):
     dataframe = pd.read_csv(src)
     cluster_dict = {}
     programs_list = []
@@ -64,7 +64,7 @@ def count_qualis_occurances_for_programs(src):
             elif qualis in ("B1", "B2", "B3", "B4"):
                 cluster_dict[cluster][program]["B1/B2/B3/B4"] += 1
 
-    return sort_programs_dict(cluster_dict)
+    return sort_programs_dict(cluster_dict, sort_by)
 
 
 def dict_to_json(filename, dictionary):
@@ -81,8 +81,8 @@ def dict_from_json(src):
         return dictionary
 
 
-def make_dict(csv_file, cluster_list=None):
-    cluster_dict = count_qualis_occurances_for_programs(csv_file)
+def make_dict(csv_file, cluster_list=None, sort_by="A1/A2/A3/A4"):
+    cluster_dict = count_qualis_occurances_for_programs(csv_file, sort_by)
     selected_clusters = cluster_dict
 
     if cluster_list is not None:
@@ -101,7 +101,16 @@ def make_values_dict_from_keys(dictionary, keys):
 
     return values_dict
 
-def plot(subdict, program_code_list, count_dict, title, image_name, template="program", comparing=False):
+def label_bar(ax, bars):
+    for bar in bars:
+        height = bar.get_height()
+        ax.annotate('{}'.format(height),
+                    xy=(bar.get_x() + bar.get_width() / 2, height),
+                    xytext=(0, 3),
+                    textcoords="offset points",
+                    ha='center', va='bottom')
+
+def plot(subdict, program_code_list, count_dict, title, image_name, template="program", comparing=False, auto_label=False):
     if template == "program":
         bar_width = 0.08
         colors = ["#54c73a", "#abd216", "#ccce0f", "#f0f200",
@@ -117,8 +126,10 @@ def plot(subdict, program_code_list, count_dict, title, image_name, template="pr
     multiplier = 0
 
     for key in count_dict:
-        ax.bar(x + bar_width * multiplier, count_dict[key], width=bar_width, label=key,
+        bar = ax.bar(x + bar_width * multiplier, count_dict[key], width=bar_width, label=key,
                color=colors[multiplier])
+        if auto_label:
+            label_bar(ax, bar)
         multiplier += 1
 
     ax.set_xticks(x + tick_translate * bar_width)
@@ -129,7 +140,7 @@ def plot(subdict, program_code_list, count_dict, title, image_name, template="pr
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['bottom'].set_color('#DDDDDD')
-    ax.tick_params(left=False)
+    ax.tick_params(left=False, bottom=False)
     ax.set_axisbelow(True)
     ax.yaxis.grid(True, color='#DDDDDD')
     ax.set_title(title)
@@ -191,18 +202,24 @@ def plot_compare(dict_src, program_code_list_str, cluster, image_name=None):
     
     plot(subdict, program_code_list, count_dict, "Comparação entre programas", image_name=image_name, template="compare")
 
-def plot_program_cluster(dict_src, program, image_name=None):
+def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=None):
     dictionary = dict_from_json(dict_src)
-    subdict = {key: dictionary[key][program] for key in dictionary if program in dictionary[key]}
+    
+    if cluster_list_str is not None:
+        selected_clusters = string_to_list(cluster_list_str, separator='-')
+    else: 
+        selected_clusters = dictionary
+        
+    subdict = {key: dictionary[key][program] for key in selected_clusters if program in dictionary[key]}
     count_dict = make_values_dict_from_keys(subdict, ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C/NI/NP"])
 
     if image_name is None:
         image_name = "../results/" + file_name_from_path(
             dict_src) + "_" + program + '_' + ".png"
 
-    plot(subdict, subdict.keys(), count_dict, "Porcentagem de publicações por grupo", image_name=image_name)
+    plot(subdict, subdict.keys(), count_dict, "Porcentagem de publicações por grupo", image_name=image_name, auto_label=True)
 
-#make_dict("../datasets/Particao_k3_c1.csv")
-plot_n_best("../results/Particao_k3_c1.json", 3, "cluster1", "23001011030P1")
-plot_compare("../results/Particao_k3_c1.json", "[23001011010P0-23001011031P8-23001011020P6]", "cluster1")
-plot_program_cluster("../results/Particao_k3_c1.json", "23001011010P0")
+#make_dict("../datasets/Particoes.csv")
+plot_n_best("../results/Particoes.json", 2, "cluster1", "23001011030P1")
+plot_compare("../results/Particoes.json", "[23001011010P0-23001011031P8-23001011020P6]", "cluster1")
+plot_program_cluster("../results/Particoes.json", "23001011010P0", "[cluster1-cluster2]")
