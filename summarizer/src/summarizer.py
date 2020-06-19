@@ -212,10 +212,12 @@ def plot(subdict, program_code_list, count_dict, title, program_name, image_name
         colors = ["#54c73a", "#abd216", "#ccce0f", "#f0f200",
                   "#ffce00", "#ff9a00", "#ff6700", "#ff3300", "#ff0000"]
         tick_translate = 4
+        axvline_translate = 10*bar_width + bar_width/3
     elif template == "compare":
         bar_width = 0.15
         colors = ["#d6af36", "#a7a7ad", "#a77044"]
         tick_translate = 1
+        axvline_translate = 4*bar_width + bar_width/3
     
     fig, ax = plt.subplots()
     x = np.arange(len(program_code_list))
@@ -227,6 +229,12 @@ def plot(subdict, program_code_list, count_dict, title, program_name, image_name
         if auto_label:
             label_bar(ax, bar)
         multiplier += 1
+
+    j = 0
+    for i in range(len(program_code_list) - 1):
+        if i > 0:
+            j = bar_width + bar_width/3
+        plt.axvline(x = axvline_translate + i*(axvline_translate + bar_width + j), color="#DDDDDD")
 
     if program_name:
         program_code_list = [get_program_name(program) for program in program_code_list]
@@ -321,7 +329,7 @@ def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=No
         image_name = "../results/" + file_name_from_path(
             dict_src) + "_" + program + '_' + ".png"
 
-    plot(subdict, subdict.keys(), count_dict, "Publicações por grupo", False, image_name=image_name, auto_label=True, cluster=True)
+    plot(subdict, subdict.keys(), count_dict, "Publicações por grupo", False, image_name=image_name, cluster=True)
 
 def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=None):
     dictionary = dict_from_json(dict_src)
