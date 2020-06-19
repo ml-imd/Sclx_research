@@ -14,6 +14,7 @@ def file_name_from_path(path):
     head, tail = split(path)
     filename = tail or basename(head)
 
+    #removing filename extension
     if "." in filename:
         i = -1
         while(filename[i] != '.'):
@@ -30,7 +31,7 @@ def sort_programs_dict(cluster_dict, sort_by):
     return cluster_dict
 
 
-def count_qualis_occurances_for_programs(src, sort_by):
+def count_qualis_occurances_for_programs(src):
     dataframe = pd.read_csv(src)
     cluster_dict = {}
     programs_list = []
@@ -64,10 +65,11 @@ def count_qualis_occurances_for_programs(src, sort_by):
             elif qualis in ("B1", "B2", "B3", "B4"):
                 cluster_dict[cluster][program]["B1/B2/B3/B4"] += 1
 
-    return sort_programs_dict(cluster_dict, sort_by)
+    return cluster_dict
 
 
 def dict_to_json(filename, dictionary):
+    #converting dictionary into a json string
     json_dict = json.dumps(dictionary)
 
     with open(filename, "w") as file:
@@ -82,9 +84,10 @@ def dict_from_json(src):
 
 
 def make_dict(csv_file, cluster_list=None, sort_by="A1/A2/A3/A4"):
-    cluster_dict = count_qualis_occurances_for_programs(csv_file, sort_by)
+    cluster_dict = sort_programs_dict(count_qualis_occurances_for_programs(csv_file), sort_by)
     selected_clusters = cluster_dict
 
+    #checking if a list of clusters was specified
     if cluster_list is not None:
         selected_clusters = string_to_list(cluster_list, separator='-')
 
@@ -207,6 +210,7 @@ def get_program_name(program):
     return programs[program]
 
 def plot(subdict, program_code_list, count_dict, title, program_name, image_name, template="program", comparing=False, auto_label=False, cluster=False):
+    #defining some specific attributes based on what template is being used for the graphs
     if template == "program":
         bar_width = 0.08
         colors = ["#54c73a", "#abd216", "#ccce0f", "#f0f200",
@@ -227,9 +231,11 @@ def plot(subdict, program_code_list, count_dict, title, program_name, image_name
         bar = ax.bar(x + bar_width * multiplier, count_dict[key], width=bar_width, label=key,
                color=colors[multiplier])
         if auto_label:
+            #labeling each bar
             label_bar(ax, bar)
         multiplier += 1
 
+    #plotting vertical lines between each program or group
     j = 0
     for i in range(len(program_code_list) - 1):
         if i > 0:
@@ -239,10 +245,12 @@ def plot(subdict, program_code_list, count_dict, title, program_name, image_name
     if program_name:
         program_code_list = [get_program_name(program) for program in program_code_list]
 
+    #setting up x labels and legend
     ax.set_xticks(x + tick_translate * bar_width)
     ax.set_xticklabels(program_code_list)
     ax.legend(bbox_to_anchor=(1.04,0), loc="lower left")
 
+    #setting up plot design
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
@@ -257,8 +265,11 @@ def plot(subdict, program_code_list, count_dict, title, program_name, image_name
     else:
         ax.set_xlabel("Programas")
 
+    #rotating x labels if number of programs/groups is greater than 3
+    #this way labels won't overlap each other
     if len(subdict) > 3:
         fig.autofmt_xdate()
+    
     fig.tight_layout()
 
     if comparing:
