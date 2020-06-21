@@ -1,0 +1,9 @@
+DESCRIPTION:
+    Dado um caminho do sistema retorna o nome do arquivo sem os separadores de caminho e sem a extensão do arquivo.
+
+PARAMETERS: path
+                Caminho para o arquivo.
+
+RETURNS:
+    Retorna o nome do arquivo.
+

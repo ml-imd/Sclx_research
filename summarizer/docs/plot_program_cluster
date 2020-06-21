@@ -1,0 +1,20 @@
+DESCRIPTION:
+    Gráfico de barras de todas as publicações de um programa em clusters selecionados.
+
+PARAMETERS: dict_src
+                Caminho para o arquivo JSON com os dados estruturados.
+                Exemplo: "../results/Particoes.json"
+            program
+                Programa escolhido.
+                Exemplo: "23001011010P0"
+            cluster_list_str=None
+                Lista de clusters selecionados
+                Exemplo: [cluster1-cluster2-...]
+                Caso nenhum cluster seja fornecido, todos os clusters encontrados serão usados.
+            image_name=None
+                Caminho e nome do arquivo de saída.
+                Exemplo: "../results/Plot_compare_graph"
+                Se nenhum nome for fornecido, um nome padrão será utilizado.
+                Formato de nome padrão: "Particoes_programaX.png"
+
+EXAMPLE: plot_program_cluster("../results/Particoes.json", "23001011010P0", "[cluster1-cluster2]")

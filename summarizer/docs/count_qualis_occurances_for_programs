@@ -1,0 +1,9 @@
+DESCRIPTION:
+    Transforma o CSV em um dicionário Python com estrutura de dados especificada em GENERAL PROGRAM FLOW.
+
+PARAMETERS: src
+                Caminho para o CSV com os dados a serem transformados.
+                Exemplo: "../results/arquivo.csv"
+
+RETURNS:
+    Dicionário Python com a estrutura desejada.

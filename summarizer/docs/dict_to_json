@@ -1,0 +1,7 @@
+DESCRIPTION:
+    Cria um arquivo JSON a partir de um dicionário Python.
+
+PARAMETERS: filename
+                Caminho e nome do arquivo JSON a ser criado.
+            dictionary
+                Dicionário Python utilizado para criar o JSON.

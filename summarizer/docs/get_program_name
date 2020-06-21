@@ -1,0 +1,8 @@
+DESCRIPTION:
+    Fornece o nome de um programa a partir do código.
+
+PARAMETERS: program
+                O código do programa.
+                
+RETURNS:
+    O nome do programa.

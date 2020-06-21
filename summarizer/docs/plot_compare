@@ -1,0 +1,24 @@
+DESCRIPTION:
+    Gráficos 'ouro, prata, bronze' de programas diferentes para um cluster escolhido.
+
+PARAMETERS: dict_src
+                Caminho para o arquivo JSON com os dados estruturados.
+                Exemplo: "../results/Particoes.json"
+            program_code_list_str
+                Programas desejados no gráfico.
+                Exemplo: "[programa1-programa2-...]"
+            cluster
+                Cluster escolhido como universo dos programas.
+                Exemplo: "cluster1"
+            image_name=None
+                Caminho e nome do arquivo de saída.
+                Exemplo: "../results/Plot_compare_graph"
+                Se nenhum nome for fornecido, um nome padrão será utilizado.
+                Formato de nome padrão: "Particoes_[programa1-programa2-...].png"
+            program_name=False
+                Especifica se é o nome ou o código de cada programa que aparecerá na legenda.
+                True: Será exibido o nome do programa.
+                False: Será exibido o código do programa.
+                Esse parâmetro é False por padrão.
+
+EXAMPLE: plot_compare("../results/Particoes.json", "[23001011010P0-23001011031P8-23001011020P6]", "cluster1", program_name=True)

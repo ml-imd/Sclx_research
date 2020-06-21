@@ -1,0 +1,11 @@
+DESCRIPTION:
+    Constroi uma estrutura de dados em JSON a partir do CSV original.
+
+PARAMETERS: csv_file
+                Caminho do CSV.
+            cluster_list=None
+                Clusters que desejamos incluir em nosso JSON.
+            sort_by="A1/A2/A3/A4"
+                Critério de ordenação dos programas no JSON.
+
+EXAMPLE: make_dict("../datasets/Particoes.csv")

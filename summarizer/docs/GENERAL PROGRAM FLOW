@@ -1,0 +1,57 @@
+A partir de um arquivo CSV com o seguinte cabeçalho: autor_docente, autores, producao, ano, tipo_producao, citescore, quartil_citescore, percentile, quartil_percentile, q_p, qualis_estrato,qualis, programas,p rog._qtd, Cluster
+
+Utilizamos a função make_dict para transformar esse CSV em um arquivo JSON com a seguinte estrutura:
+{
+    "cluster0" : {
+        "programaA": {
+            "A1": 232,
+            "A2": 443,
+            "A3": 234,
+            "A4": 234,
+            "B1": 543,
+            "B2": 647,
+            "B3": 643,
+            "B4": 123,
+            "C/NI/NP": 3183,
+            "A1/A2/A3/A4": 1143,
+            "B1/B2/B3/B4": 1956,
+            "total": 6282
+        },
+        "ProgramaB" : {...},
+        "ProgramaC" : {...},
+        ...
+        "ProgramaN" : {...}
+    },
+    "cluster1" : {...},
+    "cluster2" : {...},
+    "cluster3" : {...},
+    ...
+    "clusterK" : {...}
+}
+
+A estrutura acima se resume a um {
+    dicionário cujas chaves são clusters e os valores são {
+        dicionários cujas chaves são programas e os valores são {
+            dicionários cujas chaves são qualis e os valores são números.
+        }
+    }
+}
+
+Implementamos funções que são alimentadas com esse JSON e criam os gráficos desejados utilizando a biblioteca matplotlib.
+Estas são as funções para criação dos gráficos {
+    plot_compare {
+        Gráficos 'ouro, prata, bronze' de programas diferentes para um cluster escolhido.
+    },
+    plot_cluster_compare {
+        Gráficos 'ouro, prata, bronze' do mesmo programa em clusters diferentes.
+    },
+    plot_n_best {
+        Gráfico de barra dos N melhores programas de um único cluster.
+    },
+    plot_program_cluster {
+        Gráfico de barras de todas as publicações de um programa em clusters selecionados.
+    }
+}
+
+Esse documento é apenas um pequeno resumo do fluxo do programa e do funcionamento de algumas funções importantes ao usuários.
+Para obter a descrição de uma determinada função, ou seus parâmetros e retorno, consulte o arquivo cujo nome é correspondente ao da função desejada.

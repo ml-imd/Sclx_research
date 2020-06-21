@@ -1,0 +1,11 @@
+DESCRIPTION:
+    Recebe um dicionario de clusters sem ordenação e retorna um dicionario de clusters cujos programas estão ordenados por 'sort_by'.
+
+PARAMETERS: cluster_dict
+                Dicionário com os clusters e programas a serem ordenados.
+            sort_by
+                Critério de ordenação dos programas.
+                Exemplo: sort_by="A1/A2/A3/A4"
+
+RETURNS:
+    Um dicionário de clusters cujos programas estejam ordenados por 'sort_by'

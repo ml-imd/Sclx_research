@@ -1,0 +1,29 @@
+DESCRIPTION:
+    Exibe um gráfico de barras com as publicações de uma lista de programas para dado cluster.
+
+PARAMETERS: dict_src
+                Caminho para o arquivo JSON com os dados estruturados.
+                Exemplo: "../results/Particoes.json"
+            program_code_list_str
+                Programas desejados no gráfico.
+                Exemplo: "[programa1-programa2-...]"
+            cluster
+                Cluster escolhido como universo.
+                Exemplo: "cluster1"
+            image_name=None
+                Caminho e nome do arquivo de saída.
+                Exemplo: "../results/Plot_compare_graph"
+                Se nenhum nome for fornecido, um nome padrão será utilizado.
+                Formato de nome padrão: Particoes_[programa1-programa2-...].png
+            comparing=False
+                Indica que estamos comparando os todos os programas fornecidos ao último da lista.
+                True: Legenda do úlltimo programa em vermelho.
+                False: Todas as legendas da mesma cor.
+                A legenda do programa escolhido para comparação ficará em vermelho.
+            program_name=False
+                Especifica se é o nome ou o código de cada programa que aparecerá na legenda.
+                True: Será exibido o nome do programa.
+                False: Será exibido o código do programa.
+                Esse parâmetro é False por padrão.
+
+EXAMPLE: plot_program("../results/Particoes.json", "[23001011010P0-23001011031P8-23001011020P6]", "cluster1", image_name=None, comparing=True, program_name=False)

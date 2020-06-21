@@ -1,0 +1,14 @@
+DESCRIPTION:
+    Recebe uma string cercada por delimitadores e dividada por separadores e retorna uma lista de string sem separadores e delimitadores.
+
+PARAMETERS: list_str
+                Lista de nomes a serem operados.
+            separator=','
+                Caractere que separa os elementos da lista.
+                Exemplo: "bla-bla-bla" ou "bla,bla,bla" ou ...
+            delimiter='[]'
+                Caracteres nas extremidades da lista de nomes.
+                Exemplo: "(xxxxx)" ou "[xxxxx]" ou ...
+
+RETURNS:
+    Lista de nomes sem os separadores e delimitadores.

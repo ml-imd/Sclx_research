@@ -1,0 +1,10 @@
+DESCRIPTION:
+    Recebe um dicionário Python e devolve outro dicionário apenas com as chaves solicitadas.
+
+PARAMETERS: dictionary
+                Dicionário Python.
+            keys
+                Chaves solicitadas.
+
+RETURNS:
+    Dicionário filtrado.

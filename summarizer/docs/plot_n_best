@@ -1,0 +1,28 @@
+DESCRIPTION:
+    Gráfico de barra dos N melhores programas de um único cluster.
+
+PARAMETERS: dict_src
+                Caminho para o arquivo JSON com os dados estruturados.
+                Exemplo: "../results/Particoes.json"
+            n_str
+                Número de melhores programas desejados do cluster.
+                Exemplo: 2
+            cluster
+                Cluster escolhido como universo dos n melhores programas.
+                Exemplo: "cluster1"
+            compare_to=None
+                Programa a ser comparado aos N melhores.
+                Exemplo: "23001011030P1"
+                A legenda do programa escolhido para comparação ficará em vermelho.
+            image_name=None
+                Caminho e nome do arquivo de saída.
+                Exemplo: "../results/Plot_compare_graph"
+                Se nenhum nome for fornecido, um nome padrão será utilizado.
+                Formato de nome padrão: "Particoes_[programa1-programa2-...].png"
+            program_name=False
+                Especifica se é o nome ou o código de cada programa que aparecerá na legenda.
+                True: Será exibido o nome do programa.
+                False: Será exibido o código do programa.
+                Esse parâmetro é False por padrão.
+
+EXAMPLE: plot_n_best("../results/Particoes.json", 2, "cluster1", "23001011030P1", program_name=True)

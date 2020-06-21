@@ -1,0 +1,30 @@
+DESCRIPTION: Procedimento comum entre todas as funções plot_xxx.
+
+PARAMETERS: subdict
+                Dicionário Python utilizado para o gráfico.
+            program_code_list
+                Lista dos programas a serem plotados.
+            count_dict
+                Valores de cada barra.
+            title
+                Define o título do gráfico.
+            program_name
+                Especifica se é o nome ou o código de cada programa que aparecerá na legenda.
+                True: Será exibido o nome do programa.
+                False: Será exibido o código do programa.
+            image_name
+                Caminho e nome do arquivo de saída.
+                Exemplo: "../results/Plot_compare_graph"
+            template="program"
+                Para esse parâmetro temos duas opções.
+                "program": Indica que o template do gráfico é o de apresentação do número de qualis.
+                "compare": Indica que o template do gráfico é do tipo "ouro, prata e bronze".
+            comparing=False
+                True: O último programa fica destacado em vermelho.
+                False: Todos os programas com mesmo estilo.
+            auto_label=False
+                Número de programas acima de cada barra
+            cluster=False
+                Define se o gráfico vai usar programas ou clusters.
+                True: Clusters serão usados.
+                False: Programas serão usados.

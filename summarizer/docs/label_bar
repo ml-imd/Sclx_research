@@ -1,0 +1,7 @@
+DESCRIPTION:
+    Recebe uma lista de barras do matplotlib para adicionar numerações acima.
+
+PARAMETERS: ax
+                Objeto axes do matplotlib.
+            bars
+                Lista de barras do matplotlib.

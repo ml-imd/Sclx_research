@@ -1,0 +1,9 @@
+DESCRIPTION:
+    Cria um dicionário Python a partir de um arquivo JSON.
+
+PARAMETERS: src
+                Caminho para o arquivo JSON com os dados estruturados.
+                Exemplo: "../results/arquivo.json"
+
+RETURNS:
+    Dicionário Python com a estrutura especificada em GENERAL PROGRAM FLOW

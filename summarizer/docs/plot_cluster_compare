@@ -1,0 +1,19 @@
+DESCRIPTION:
+    Gráficos 'ouro, prata, bronze' do mesmo programa em clusters diferentes.
+
+PARAMETERS: dict_src
+                Caminho para o arquivo JSON com os dados estruturados.
+                Exemplo: "../results/Particoes.json"
+            program
+                Programa escolhido.
+                Exemplo: "23001011010P0"
+            cluster_list_str=None
+                Clusters para verificar o programa escolhido.
+                Exemplo: "[cluster1-cluster2-...]"
+            image_name=None
+                Caminho e nome do arquivo de saída.
+                Exemplo: "../results/Plot_compare_graph"
+                Se nenhum nome for fornecido, um nome padrão será utilizado.
+                Formato de nome padrão: "Particoes_ProgramaX_compare.png"
+
+EXAMPLE: plot_cluster_compare("../results/Particoes.json", "23001011010P0", "[cluster1-cluster2]")
