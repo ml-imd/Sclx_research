@@ -337,38 +337,57 @@ def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=No
     plot(subdict, subdict.keys(), count_dict, "Comparação entre grupos", False, image_name=image_name,
          template="compare", cluster=True)
 
+class StatusBar(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.bar = tk.Label(self, text="Welcome to Scylax!", bd=1, relief=tk.SUNKEN, anchor=tk.W)
+        self.bar.pack(expand=1, fill=tk.X)
+        self.pack(side=tk.BOTTOM, fill=tk.X)
+
+
+class ApplicationBody(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master, bg="black")
+        self.master = master
+        self.pack(expand=1, fill=tk.BOTH)
+
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.pack()
-        self.main_screen()
-
-    def main_screen(self):
         self.master.title("Scylax")
         w = int(self.master.winfo_screenwidth() / 2 - 250)
         h = int(self.master.winfo_screenheight() / 2 - 250)
         self.master.geometry("500x500+{}+{}".format(w, h))
-        self.button_load_data = tk.Button(self, text="Load Data", command=self.load_data)
-        self.button_load_data.pack()
-        self.status_label = tk.Label(self)
-        self.status_label.pack()
+        self.master.menu_bar = tk.Menu(self.master)
+        self.master.file_menu = tk.Menu(self.master.menu_bar, tearoff=0)
+        self.master.file_menu.add_command(label="Load", command=self.load_data)
+        self.master.menu_bar.add_cascade(label="Data", menu=self.master.file_menu)
+        self.master.edit_menu = tk.Menu(self.master.menu_bar, tearoff=0)
+        self.master.edit_menu.add_command(label="Select All")
+        self.master.menu_bar.add_cascade(label="Plot", menu=self.master.edit_menu)
+        self.master.config(menu=self.master.menu_bar)
+        self.status_bar = StatusBar(self)
+        self.application_body = ApplicationBody(self)
+        self.pack(expand=1, fill=tk.BOTH)
 
     def load_data(self):
-        self.status_label["text"] = "Loading..."
+        self.status_bar.bar["text"] = "Loading..."
         try:
             if os.path.exists("./Particoes.json"):
-                if tk.messagebox.askquestion ("This data has been imported before", "Would you like to import anyway?") == "no":
-                    self.status_label["text"] = "Finished!"
+                if tk.messagebox.askquestion("This data has been imported before",
+                                             "Would you like to import anyway?") == "no":
+                    self.status_bar.bar["text"] = "Finished!"
                     return
-            file_name = filedialog.askopenfilename(initialdir=".", title="Select file to load data", filetypes=(("csv files", "*.csv"), ("all files", "*.*")))
+            file_name = filedialog.askopenfilename(initialdir=".", title="Select file to load data",
+                                                   filetypes=(("csv files", "*.csv"), ("all files", "*.*")))
             make_dict(file_name)
-            self.status_label["text"] = "Finished!"
+            self.status_bar.bar["text"] = "Finished!"
         except:
-            self.status_label["text"] = "Fail!"
-
+            self.status_bar.bar["text"] = "Fail!"
 
 root = tk.Tk()
 app = Application(master=root)
-app.mainloop()
+root.mainloop()
