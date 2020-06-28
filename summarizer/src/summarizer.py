@@ -1,11 +1,12 @@
+import json
 import os.path
-import tkinter as tk
-from tkinter import filedialog
 import numpy as np
 import pandas as pd
+import tkinter as tk
+from tkinter import filedialog
 import matplotlib.pyplot as plt
 from ntpath import split, basename
-import json
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 
 def string_to_list(list_str, separator=',', delimiter='[]'):
@@ -203,7 +204,7 @@ def get_program_name(program):
 
 
 def plot(subdict, program_code_list, count_dict, title, program_name, image_name, template="program", comparing=False,
-         auto_label=False, cluster=False):
+         auto_label=False, cluster=False, in_this_frame=None):
     # defining some specific attributes based on what template is being used for the graphs
     if template == "program":
         bar_width = 0.08
@@ -259,11 +260,19 @@ def plot(subdict, program_code_list, count_dict, title, program_name, image_name
     fig.tight_layout()
     if comparing:
         plt.gca().get_xticklabels()[-1].set_color('red')
-    fig.savefig(image_name)
+    if in_this_frame is None:
+        fig.savefig(image_name)
+    else:
+        canvas = FigureCanvasTkAgg(fig, master=in_this_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        toolbar = NavigationToolbar2Tk(canvas, in_this_frame)
+        toolbar.update()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
 
 def plot_program(dict_src, program_code_list_str, cluster, image_name=None, comparing=False, program_name=False,
-                 where_to_store="./"):
+                 where_to_store="./", in_this_frame=None):
     program_code_list = string_to_list(program_code_list_str, separator="-")
     subdict = {key: value for key, value in dict_from_json(
         dict_src)[cluster].items() if key in program_code_list}
@@ -272,10 +281,10 @@ def plot_program(dict_src, program_code_list_str, cluster, image_name=None, comp
         image_name = where_to_store + file_name_from_path(
             dict_src) + "_" + program_code_list_str + ".png"
     plot(subdict, program_code_list, count_dict, "Produções por programa", program_name, image_name=image_name,
-         comparing=comparing)
+         comparing=comparing, in_this_frame=in_this_frame)
 
 
-def plot_n_best(dict_src, n_str, cluster, compare_to=None, image_name=None, program_name=False):
+def plot_n_best(dict_src, n_str, cluster, compare_to=None, image_name=None, program_name=False, in_this_frame=None):
     n = int(n_str)
     program_code_list_str = "["
     count = 0
@@ -294,10 +303,10 @@ def plot_n_best(dict_src, n_str, cluster, compare_to=None, image_name=None, prog
                 program_code_list_str += ']'
         count += 1
     plot_program(dict_src, program_code_list_str, cluster, program_name=program_name, image_name=image_name,
-                 comparing=comparing)
+                 comparing=comparing, in_this_frame=in_this_frame)
 
 
-def plot_compare(dict_src, program_code_list_str, cluster, image_name=None, program_name=False, where_to_store="./"):
+def plot_compare(dict_src, program_code_list_str, cluster, image_name=None, program_name=False, where_to_store="./", in_this_frame=None):
     program_code_list = string_to_list(program_code_list_str, separator="-")
     subdict = {key: value for key, value in dict_from_json(
         dict_src)[cluster].items() if key in program_code_list}
@@ -306,10 +315,10 @@ def plot_compare(dict_src, program_code_list_str, cluster, image_name=None, prog
         image_name = where_to_store + file_name_from_path(
             dict_src) + "_" + program_code_list_str + "_compare.png"
     plot(subdict, program_code_list, count_dict, "Comparação entre programas", program_name, image_name=image_name,
-         template="compare")
+         template="compare", in_this_frame=in_this_frame)
 
 
-def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./"):
+def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./", in_this_frame=None):
     dictionary = dict_from_json(dict_src)
     if cluster_list_str is not None:
         selected_clusters = string_to_list(cluster_list_str, separator='-')
@@ -320,10 +329,10 @@ def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=No
     if image_name is None:
         image_name = where_to_store + file_name_from_path(
             dict_src) + "_" + program + '_' + ".png"
-    plot(subdict, subdict.keys(), count_dict, "Publicações por grupo", False, image_name=image_name, cluster=True)
+    plot(subdict, subdict.keys(), count_dict, "Publicações por grupo", False, image_name=image_name, cluster=True, in_this_frame=in_this_frame)
 
 
-def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./"):
+def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./", in_this_frame=None):
     dictionary = dict_from_json(dict_src)
     if cluster_list_str is not None:
         selected_clusters = string_to_list(cluster_list_str, separator='-')
@@ -335,7 +344,39 @@ def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=No
         image_name = where_to_store + file_name_from_path(
             dict_src) + "_" + program + '_' + "compare.png"
     plot(subdict, subdict.keys(), count_dict, "Comparação entre grupos", False, image_name=image_name,
-         template="compare", cluster=True)
+         template="compare", cluster=True, in_this_frame=in_this_frame)
+
+
+class OneProgram(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        plot_cluster_compare("../results/Particoes.json", "23001011010P0", "[cluster1-cluster2]", in_this_frame=self)
+        self.pack(expand=1, fill=tk.BOTH)
+
+
+class ProgramCompare(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        plot_compare("../results/Particoes.json", "[23001011010P0-23001011031P8-23001011020P6]", "cluster1", program_name=True, in_this_frame=self)
+        self.pack(expand=1, fill=tk.BOTH)
+
+
+class NBest(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        plot_n_best("../results/Particoes.json", 2, "cluster1", "23001011030P1", program_name=True, in_this_frame=self)
+        self.pack(expand=1, fill=tk.BOTH)
+
+
+class ProgramPerCluster(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        plot_program_cluster("../results/Particoes.json", "23001011010P0", "[cluster1-cluster2]", in_this_frame=self)
+        self.pack(expand=1, fill=tk.BOTH)
 
 
 class ApplicationStatusBar(tk.Frame):
@@ -347,37 +388,9 @@ class ApplicationStatusBar(tk.Frame):
         self.pack(side=tk.BOTTOM, fill=tk.X)
 
 
-class OneProgram(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master, bg="yellow")
-        self.master = master
-        self.pack(expand=1, fill=tk.BOTH)
-
-
-class ProgramCompare(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master, bg="blue")
-        self.master = master
-        self.pack(expand=1, fill=tk.BOTH)
-
-
-class NBest(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master, bg="green")
-        self.master = master
-        self.pack(expand=1, fill=tk.BOTH)
-
-
-class ProgramPerCluster(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master, bg="red")
-        self.master = master
-        self.pack(expand=1, fill=tk.BOTH)
-
-
 class ApplicationBody(tk.Frame):
     def __init__(self, master=None):
-        super().__init__(master, bg="black")
+        super().__init__(master)
         self.master = master
         self.present_screen = None
         self.pack(expand=1, fill=tk.BOTH)
@@ -437,9 +450,9 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.master.title("Scylax")
-        w = int(self.master.winfo_screenwidth() / 2 - 250)
-        h = int(self.master.winfo_screenheight() / 2 - 250)
-        self.master.geometry("500x500+{}+{}".format(w, h))
+        w = int(self.master.winfo_screenwidth())
+        h = int(self.master.winfo_screenheight())
+        self.master.geometry("{}x{}".format(w, h))
         self.application_status_bar = ApplicationStatusBar(self)
         self.application_body = ApplicationBody(self)
         self.application_top_menu = ApplicationTopMenu(self)
