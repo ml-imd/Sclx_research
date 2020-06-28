@@ -347,11 +347,56 @@ class ApplicationStatusBar(tk.Frame):
         self.pack(side=tk.BOTTOM, fill=tk.X)
 
 
+class OneProgram(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master, bg="yellow")
+        self.master = master
+        self.pack(expand=1, fill=tk.BOTH)
+
+
+class ProgramCompare(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master, bg="blue")
+        self.master = master
+        self.pack(expand=1, fill=tk.BOTH)
+
+
+class NBest(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master, bg="green")
+        self.master = master
+        self.pack(expand=1, fill=tk.BOTH)
+
+
+class ProgramPerCluster(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master, bg="red")
+        self.master = master
+        self.pack(expand=1, fill=tk.BOTH)
+
+
 class ApplicationBody(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master, bg="black")
         self.master = master
+        self.present_screen = None
         self.pack(expand=1, fill=tk.BOTH)
+
+    def one_program(self):
+        self.present_screen is not None and self.present_screen.destroy()
+        self.present_screen = OneProgram(self)
+
+    def program_compare(self):
+        self.present_screen is not None and self.present_screen.destroy()
+        self.present_screen = ProgramCompare(self)
+
+    def n_best(self):
+        self.present_screen is not None and self.present_screen.destroy()
+        self.present_screen = NBest(self)
+
+    def program_per_cluster(self):
+        self.present_screen is not None and self.present_screen.destroy()
+        self.present_screen = ProgramPerCluster(self)
 
 
 class ApplicationTopMenu:
@@ -362,10 +407,12 @@ class ApplicationTopMenu:
         self.master.master.file_menu.add_command(label="Load", command=self.load_data)
         self.master.master.menu_bar.add_cascade(label="Data", menu=self.master.master.file_menu)
         self.master.master.edit_menu = tk.Menu(self.master.master.menu_bar, tearoff=0)
-        self.master.master.edit_menu.add_command(label="One Program")
-        self.master.master.edit_menu.add_command(label="Program Compare")
-        self.master.master.edit_menu.add_command(label="N Best")
-        self.master.master.edit_menu.add_command(label="Program per cluster")
+        self.master.master.edit_menu.add_command(label="One Program", command=self.master.application_body.one_program)
+        self.master.master.edit_menu.add_command(label="Program Compare",
+                                                 command=self.master.application_body.program_compare)
+        self.master.master.edit_menu.add_command(label="N Best", command=self.master.application_body.n_best)
+        self.master.master.edit_menu.add_command(label="Program per cluster",
+                                                 command=self.master.application_body.program_per_cluster)
         self.master.master.menu_bar.add_cascade(label="Plot", menu=self.master.master.edit_menu)
         self.master.master.config(menu=self.master.master.menu_bar)
 
@@ -381,7 +428,7 @@ class ApplicationTopMenu:
                                                    filetypes=(("csv files", "*.csv"), ("all files", "*.*")))
             make_dict(file_name)
             self.master.application_status_bar.bar["text"] = "Finished!"
-        except:
+        finally:
             self.master.application_status_bar.bar["text"] = "Fail!"
 
 
@@ -393,9 +440,9 @@ class Application(tk.Frame):
         w = int(self.master.winfo_screenwidth() / 2 - 250)
         h = int(self.master.winfo_screenheight() / 2 - 250)
         self.master.geometry("500x500+{}+{}".format(w, h))
-        self.application_top_menu = ApplicationTopMenu(self)
-        self.application_body = ApplicationBody(self)
         self.application_status_bar = ApplicationStatusBar(self)
+        self.application_body = ApplicationBody(self)
+        self.application_top_menu = ApplicationTopMenu(self)
         self.pack(expand=1, fill=tk.BOTH)
 
 
