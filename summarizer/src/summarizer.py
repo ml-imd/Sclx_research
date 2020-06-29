@@ -306,7 +306,8 @@ def plot_n_best(dict_src, n_str, cluster, compare_to=None, image_name=None, prog
                  comparing=comparing, in_this_frame=in_this_frame)
 
 
-def plot_compare(dict_src, program_code_list_str, cluster, image_name=None, program_name=False, where_to_store="./", in_this_frame=None):
+def plot_compare(dict_src, program_code_list_str, cluster, image_name=None, program_name=False, where_to_store="./",
+                 in_this_frame=None):
     program_code_list = string_to_list(program_code_list_str, separator="-")
     subdict = {key: value for key, value in dict_from_json(
         dict_src)[cluster].items() if key in program_code_list}
@@ -318,7 +319,8 @@ def plot_compare(dict_src, program_code_list_str, cluster, image_name=None, prog
          template="compare", in_this_frame=in_this_frame)
 
 
-def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./", in_this_frame=None):
+def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./",
+                         in_this_frame=None):
     dictionary = dict_from_json(dict_src)
     if cluster_list_str is not None:
         selected_clusters = string_to_list(cluster_list_str, separator='-')
@@ -329,10 +331,12 @@ def plot_program_cluster(dict_src, program, cluster_list_str=None, image_name=No
     if image_name is None:
         image_name = where_to_store + file_name_from_path(
             dict_src) + "_" + program + '_' + ".png"
-    plot(subdict, subdict.keys(), count_dict, "Publicações por grupo", False, image_name=image_name, cluster=True, in_this_frame=in_this_frame)
+    plot(subdict, subdict.keys(), count_dict, "Publicações por grupo", False, image_name=image_name, cluster=True,
+         in_this_frame=in_this_frame)
 
 
-def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./", in_this_frame=None):
+def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=None, where_to_store="./",
+                         in_this_frame=None):
     dictionary = dict_from_json(dict_src)
     if cluster_list_str is not None:
         selected_clusters = string_to_list(cluster_list_str, separator='-')
@@ -351,32 +355,106 @@ class OneProgram(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        plot_cluster_compare("../results/Particoes.json", "23001011010P0", "[cluster1-cluster2]", in_this_frame=self)
         self.pack(expand=1, fill=tk.BOTH)
+        self.control_area = tk.Frame(self)
+        self.control_area.pack(side=tk.LEFT)
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        self.dict_src = "./Particoes.json"
+        self.control()
+
+    def plot(self):
+        self.plotting_area.destroy()
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        plot_cluster_compare(dict_src=self.dict_src, program=self.program, cluster_list_str=self.cluster_list_str, in_this_frame=self.plotting_area)
+
+    def control(self):
+        self.program = "23001011010P0"
+        self.cluster_list_str = "[cluster1-cluster2]"
+        self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
+        self.plotting_button.pack(side=tk.BOTTOM)
 
 
 class ProgramCompare(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        plot_compare("../results/Particoes.json", "[23001011010P0-23001011031P8-23001011020P6]", "cluster1", program_name=True, in_this_frame=self)
         self.pack(expand=1, fill=tk.BOTH)
+        self.control_area = tk.Frame(self)
+        self.control_area.pack(side=tk.LEFT)
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        self.dict_src = "./Particoes.json"
+        self.control()
+
+    def plot(self):
+        self.plotting_area.destroy()
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        plot_compare(dict_src=self.dict_src, program_code_list_str=self.program_code_list_str, cluster=self.cluster,
+                     program_name=self.program_name, in_this_frame=self.plotting_area)
+
+    def control(self):
+        self.program_code_list_str = "[23001011010P0-23001011031P8-23001011020P6]"
+        self.cluster = "cluster1"
+        self.program_name = True
+        self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
+        self.plotting_button.pack(side=tk.BOTTOM)
 
 
 class NBest(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        plot_n_best("../results/Particoes.json", 2, "cluster1", "23001011030P1", program_name=True, in_this_frame=self)
         self.pack(expand=1, fill=tk.BOTH)
+        self.control_area = tk.Frame(self)
+        self.control_area.pack(side=tk.LEFT)
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        self.dict_src = "./Particoes.json"
+        self.control()
+
+    def plot(self):
+        self.plotting_area.destroy()
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        plot_n_best(dict_src=self.dict_src, n_str=self.n, cluster=self.cluster, compare_to=self.compare_to,
+                    program_name=self.program_name, in_this_frame=self.plotting_area)
+
+    def control(self):
+        self.n = 2
+        self.cluster = "cluster1"
+        self.compare_to = "23001011030P1"
+        self.program_name = True
+        self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
+        self.plotting_button.pack(side=tk.BOTTOM)
 
 
 class ProgramPerCluster(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        plot_program_cluster("../results/Particoes.json", "23001011010P0", "[cluster1-cluster2]", in_this_frame=self)
         self.pack(expand=1, fill=tk.BOTH)
+        self.control_area = tk.Frame(self)
+        self.control_area.pack(side=tk.LEFT)
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        self.dict_src = "./Particoes.json"
+        self.control()
+
+    def plot(self):
+        self.plotting_area.destroy()
+        self.plotting_area = tk.Frame(self)
+        self.plotting_area.pack(side=tk.RIGHT)
+        plot_program_cluster(dict_src=self.dict_src, program=self.program, cluster_list_str=self.cluster_list_str,
+                             in_this_frame=self.plotting_area)
+
+    def control(self):
+        self.program = "23001011010P0"
+        self.cluster_list_str = "[cluster1-cluster2]"
+        self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
+        self.plotting_button.pack(side=tk.BOTTOM)
 
 
 class ApplicationStatusBar(tk.Frame):
@@ -441,7 +519,7 @@ class ApplicationTopMenu:
                                                    filetypes=(("csv files", "*.csv"), ("all files", "*.*")))
             make_dict(file_name)
             self.master.application_status_bar.bar["text"] = "Finished!"
-        finally:
+        except:
             self.master.application_status_bar.bar["text"] = "Fail!"
 
 
