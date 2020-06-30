@@ -351,6 +351,28 @@ def plot_cluster_compare(dict_src, program, cluster_list_str=None, image_name=No
          template="compare", cluster=True, in_this_frame=in_this_frame)
 
 
+
+class DataInputCell(tk.Frame):
+    def __init__(self, master=None, name=None):
+        super().__init__(master)
+        self.master = master
+        self.label_name = tk.Label(self, text=name, width=20)
+        self.label_name.pack(side=tk.LEFT)
+        self.entry_name = tk.Entry(self, text=name, width=40)
+        self.entry_name.pack(side=tk.RIGHT)
+        self.pack()
+
+
+class DataInput(tk.Frame):
+    def __init__(self, master=None, names=None):
+        super().__init__(master)
+        self.master = master
+        self.data = {}
+        for name in names:
+            self.data[name] = DataInputCell(self, name)
+        self.pack()
+
+
 class OneProgram(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -367,13 +389,16 @@ class OneProgram(tk.Frame):
         self.plotting_area.destroy()
         self.plotting_area = tk.Frame(self)
         self.plotting_area.pack(side=tk.RIGHT)
-        plot_cluster_compare(dict_src=self.dict_src, program=self.program, cluster_list_str=self.cluster_list_str, in_this_frame=self.plotting_area)
+        plot_cluster_compare(dict_src=self.dict_src, program=self.program, cluster_list_str=self.cluster_list_str,
+                             in_this_frame=self.plotting_area)
 
     def control(self):
         self.program = "23001011010P0"
         self.cluster_list_str = "[cluster1-cluster2]"
+        self.names = ["Program", "Cluster List"]
+        self.data_input = DataInput(self.control_area, self.names)
         self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
-        self.plotting_button.pack(side=tk.BOTTOM)
+        self.plotting_button.pack(side=tk.RIGHT)
 
 
 class ProgramCompare(tk.Frame):
@@ -396,11 +421,13 @@ class ProgramCompare(tk.Frame):
                      program_name=self.program_name, in_this_frame=self.plotting_area)
 
     def control(self):
+        self.names = ["Program List", "Cluster"]
+        self.data_input = DataInput(self.control_area, self.names)
         self.program_code_list_str = "[23001011010P0-23001011031P8-23001011020P6]"
         self.cluster = "cluster1"
         self.program_name = True
         self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
-        self.plotting_button.pack(side=tk.BOTTOM)
+        self.plotting_button.pack(side=tk.RIGHT)
 
 
 class NBest(tk.Frame):
@@ -423,12 +450,14 @@ class NBest(tk.Frame):
                     program_name=self.program_name, in_this_frame=self.plotting_area)
 
     def control(self):
+        self.names = ["Number of Programs", "Cluster", "Compare to"]
+        self.data_input = DataInput(self.control_area, self.names)
         self.n = 2
         self.cluster = "cluster1"
         self.compare_to = "23001011030P1"
         self.program_name = True
         self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
-        self.plotting_button.pack(side=tk.BOTTOM)
+        self.plotting_button.pack(side=tk.RIGHT)
 
 
 class ProgramPerCluster(tk.Frame):
@@ -451,10 +480,12 @@ class ProgramPerCluster(tk.Frame):
                              in_this_frame=self.plotting_area)
 
     def control(self):
+        self.names = ["Program", "Cluster List"]
+        self.data_input = DataInput(self.control_area, self.names)
         self.program = "23001011010P0"
         self.cluster_list_str = "[cluster1-cluster2]"
         self.plotting_button = tk.Button(self.control_area, text="Plot", command=self.plot)
-        self.plotting_button.pack(side=tk.BOTTOM)
+        self.plotting_button.pack(side=tk.RIGHT)
 
 
 class ApplicationStatusBar(tk.Frame):
