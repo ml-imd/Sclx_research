@@ -1,5 +1,5 @@
-from pandas import read_csv
-from pandas import DataFrame
+from pandas import DataFrame, read_csv
+
 
 def create_author():
     """
@@ -51,6 +51,7 @@ def create_author():
         'd4_B4': 0,
         'd4_C/NI/NP': 0
     }
+
     return author_obj
 
 
@@ -58,10 +59,12 @@ def split_author(author_list):
     """
     Spliting an author string to an author list
 
-    :param author_list: a string that refers the id of the authors to be splited.
+    :param author_list: a string that refers the id of the authors to be
+        splited.
     :return: a list with id authors
     """
     author_list = author_list[1:-1]
+
     return author_list.split('-')
 
 
@@ -72,6 +75,7 @@ def get_location_in_dict(year):
     :param year: the publication year of the corresponding paper.
     :return: a correspondent decade of the paper
     """
+
     if year >= 2020:
         s = 'd4'
     elif year >= 2010:
@@ -82,6 +86,7 @@ def get_location_in_dict(year):
         s = 'd1'
     else:
         s = ''
+
     return s
 
 
@@ -98,11 +103,13 @@ def count_qualis_occurances_for_authors(src):
     """
     dataframe = read_csv(src)
     author_dict = {}
+
     for i in dataframe.index:
         qualis = dataframe['qualis'][i]
         year = dataframe['ano'][i]
         decada = get_location_in_dict(year)
         author_id_list = split_author(dataframe['autores'][i])
+
         if decada != '':
             for author_id in author_id_list:
                 if author_id not in author_dict.keys():
@@ -110,14 +117,18 @@ def count_qualis_occurances_for_authors(src):
                     author_dict[author_id]['id_autor'] = author_id
                     # Call função
                     metrics = author_other_metrics(int(author_id))
+
                     if metrics != '':
                         author_dict[author_id]['num_person_colab_inter'] = \
                             metrics.pop()
-                        author_dict[author_id]['num_colab_inter'] = metrics.pop()
+                        author_dict[author_id][
+                            'num_colab_inter'] = metrics.pop()
                         author_dict[author_id]['h_index'] = metrics.pop()
-                        author_dict[author_id]['nome_normalizado'] = metrics.pop()
+                        author_dict[author_id][
+                            'nome_normalizado'] = metrics.pop()
                         author_dict[author_id]['docente_ppg'] = 1
                 author_dict[author_id][decada + '_' + qualis] += 1
+
     return author_dict
 
 
@@ -143,6 +154,7 @@ def author_other_metrics(author_id):
         metrics.append(h_index)
         metrics.append(colaboracoes_inter)
         metrics.append(colaboradores_inter)
+
         return metrics.copy()
     except ValueError:
         return ''
@@ -160,4 +172,5 @@ def run(data_in, data_out):
     """
     print("called Qualis By Year")
     data_dict = count_qualis_occurances_for_authors(data_in)
-    DataFrame.from_dict(data_dict, orient='index').to_csv(data_out, index=False)
+    DataFrame.from_dict(data_dict, orient='index').to_csv(data_out,
+                                                          index=False)
