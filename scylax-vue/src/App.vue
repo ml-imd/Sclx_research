@@ -1,10 +1,15 @@
 <template>
   <v-app>
+    <v-main>
+      <RedesDeColaboracao/>
+    </v-main>
+
     <v-navigation-drawer
       permanent
       expand-on-hover
       color="#58A4B0"
       dark
+      absolute
     >
       <v-list-item>
         <v-list-item-icon>
@@ -32,11 +37,13 @@
 </template>
 
 <script>
+import RedesDeColaboracao from './components/RedesDeColaboracao.vue'
 
 export default {
   name: 'App',
 
   components: {
+    RedesDeColaboracao
   },
 
   data: () => ({
