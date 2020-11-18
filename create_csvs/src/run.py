@@ -50,6 +50,9 @@ if __name__ == "__main__":
         )
     else:
         dataIn = sys.argv[2]
+
+        for i in sys.argv:
+            print(i)
         dataOut = name_the_file(sys.argv[3], sys.argv[1].split('.')[0])
         num = int(sys.argv[1])
 
