@@ -5,11 +5,13 @@
     </v-main>
 
     <v-navigation-drawer
+      app
       permanent
       expand-on-hover
       color="#58A4B0"
       dark
       absolute
+      height="100%"
     >
       <v-list-item>
         <v-list-item-icon>
