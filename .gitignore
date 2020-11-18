@@ -7,6 +7,6 @@ poetry.lock
 pyproject.toml
 .replit
 Dockerfile
-docker-compose.yml
 config.env
 *.sh
+docker/elasticsearch/

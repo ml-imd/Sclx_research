@@ -1,0 +1,56 @@
+version: '3.6'
+
+services:
+  elasticsearch:
+    restart: always
+    image: elasticsearch:7.9.3
+    container_name: elasticsearch
+    hostname: elasticsearch
+    volumes:
+      - ./elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - "discovery.type=single-node"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - elknetwork
+
+  kibana:
+    image: kibana:7.9.3
+    container_name: kibana
+    hostname: kibana
+    ports:
+      - 5601:5601
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknetwork
+
+  logstash:
+    restart: always
+    image: logstash:7.9.3
+    container_name: logstash
+    hostname: logstash
+    ports:
+      - 9600:9600
+      - 8089:8089
+    volumes:
+      - type: bind
+        source: ./data
+        target: /usr/share/logstash/dataset
+      - type: bind
+        source: ./pipeline
+        target: /usr/share/logstash/pipeline
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknetwork
+
+networks:
+  elknetwork:
+    driver: bridge
