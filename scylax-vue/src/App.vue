@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <RedesDeColaboracao/>
+      <component :is="selectedTab"></component>
     </v-main>
 
     <v-navigation-drawer
@@ -25,6 +25,7 @@
           v-for="(item, index) in menuItems" 
           :key="index"
           link
+          @click="selectedTab = item.componentName"
         >
           <v-list-item-icon>
             <v-icon>{{item.icon}}</v-icon>
@@ -40,20 +41,26 @@
 
 <script>
 import RedesDeColaboracao from './components/RedesDeColaboracao.vue'
+import ProgPosGrad from './components/ProgPosGrad.vue'
+import Pesquisador from './components/Pesquisador.vue'
 
 export default {
   name: 'App',
 
   components: {
-    RedesDeColaboracao
+    RedesDeColaboracao,
+    ProgPosGrad,
+    Pesquisador
   },
 
   data: () => ({
     menuItems: [
-      {title: "Redes de colaboração", icon: "mdi-lan"},
-      {title: "Programas de pós-graduação", icon: "mdi-bank"},
-      {title: "Pesquisadores", icon: "mdi-account"}
+      {title: "Redes de colaboração", icon: "mdi-lan", componentName: "RedesDeColaboracao"},
+      {title: "Programas de pós-graduação", icon: "mdi-bank", componentName: "ProgPosGrad"},
+      {title: "Pesquisadores", icon: "mdi-account", componentName: "Pesquisador"}
     ],
+
+    selectedTab: null,
   }),
 };
 </script>

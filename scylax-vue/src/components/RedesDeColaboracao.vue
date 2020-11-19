@@ -1,23 +1,29 @@
 <template>  
     <v-container
         fluid
-        class="pa-16"
+        class="pa-6"
     >
         <v-row>
             <v-col cols="11">
                 <v-text-field
                     v-model="searchedAuthor"
-                    color="#58A4B0"
-                    label="Pesquisador"
-                    
-                    prepend-inner-icon="mdi-account"
+                    dark
+                    background-color="#58A4B0"
+                    label=" Adicionar pesquisador"
+                    solo
+                    append-icon="mdi-close"
+                    prepend-inner-icon="mdi-account-plus"
+                    @keyup.enter="addAuthor"
+                    @click:append="searchedAuthor = ''"
                 ></v-text-field>
             </v-col>
-            <v-col>
-                <v-btn 
+            <v-col cols="1">
+                <v-btn
+                    small
+                    class="mt-1"
                     fab
-                    color="#58A4B0"
                     dark
+                    color="#58A4B0"
                     @click="addAuthor"
                 >
                     <v-icon>mdi-plus</v-icon>
@@ -26,11 +32,15 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-card 
+                <v-card
                     v-if="network.length > 0"
-                    width="100%">
+                    width="100%"
+                    color="#58A4B0"
+                >
                     
-                    <v-card-title primary-title>
+                    <v-card-title 
+                        class="white--text"
+                    >
                         Rede de Colaboração
                     </v-card-title>
 
@@ -59,16 +69,58 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col>
+                <v-card v-if="network.length > 1">
+                    <v-tabs
+                        v-model="currentTab"
+                        background-color="#58A4B0"
+                        dark
+                        grow
+                    >
+                        <v-tab>
+                            Resumo
+                        </v-tab>
+                        <v-tab-item>
+                            <RedesAbaResumo />
+                        </v-tab-item>
+                        <v-tab>
+                            Produções
+                        </v-tab>
+                        <v-tab-item>
+                            <RedesAbaProducoes />
+                        </v-tab-item>
+                        <v-tab>
+                            Colaboração
+                        </v-tab>
+                        <v-tab-item>
+                            <RedesAbaColaboracao />
+                        </v-tab-item>
+                    </v-tabs>
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
 <script>
+import RedesAbaColaboracao from './RedesAbaColaboracao.vue'
+import RedesAbaProducoes from './RedesAbaProducoes.vue'
+import RedesAbaResumo from './RedesAbaResumo.vue'
+
 export default {
     name: "RedesDeColaboração",
+
+    components: {
+        RedesAbaColaboracao,
+        RedesAbaProducoes,
+        RedesAbaResumo
+    },
 
     data: () => ({
         searchedAuthor: "",
         network: [],
+        currentTab: "",
     }),
 
     methods: {
