@@ -1,5 +1,4 @@
 *.iml
-*.csv
 .idea/
 *.xlsx
 __pycache__/
