@@ -1,1 +1,24 @@
 esta pasta contém o seguinte conteúdo, com o sequinte propósito:
+Script em python que avalia os algoritmos de agrupamento disponíveis no scikit-learn sobre uma determinada base de dados, usando as métricas davies bouldin e silhouette (1). Além disso, é possível exportar uma base com as instancias agrupadas de acordo com as preferencias do usuário (2).
+No arquivo main há um método de mesmo nome que realiza as operações descritas acima.
+
+main(<tarefa>, <caminho da base>, [<parametros da tarefa>], {<parametros opcionais>})
+
+string - <tarefa>               => "analyzeAll": operação (1)
+	                           "export"    : operação (2)
+
+string - <caminho da base>      => caminho da base a ser operada
+
+array  - <parametros da tarefa> => "analyzeAll": <range de k para o numero de clusters> - tuple, <valores de seed> - tuple
+	                           "export"    : <algoritmo de agrupamento> - string
+
+dict   - <parametros opcionais> => "export"    : { "k"          : <número de agrupamentos> - int
+				                   "seed"       : <seed para inicialização do centroide> - int
+						   "parameters" : <outros parametros do algoritmo no scikit-learn> - dict
+
+
+
+Exemplos:
+
+main("analyzeAll", "dataset.csv", [(2,6), (1,5)])
+main("export", "dataset.csv", ["KMeans"], {"k" : 3, "seed" : 5)

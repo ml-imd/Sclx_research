@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="background-color : #d8dbe2">
     <v-main>
       <component :is="selectedTab"></component>
     </v-main>

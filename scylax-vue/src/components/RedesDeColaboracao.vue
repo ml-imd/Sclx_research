@@ -7,10 +7,10 @@
             <v-col cols="11">
                 <v-text-field
                     v-model="searchedAuthor"
-                    dark
-                    background-color="#58A4B0"
-                    label=" Adicionar pesquisador"
-                    solo
+                    color="#58A4B0"
+                    background-color="white"
+                    placeholder=" Adicionar pesquisador"
+                    filled
                     append-icon="mdi-close"
                     prepend-inner-icon="mdi-account-plus"
                     @keyup.enter="addAuthor"
@@ -20,7 +20,7 @@
             <v-col cols="1">
                 <v-btn
                     small
-                    class="mt-1"
+                    class="mt-2"
                     fab
                     dark
                     color="#58A4B0"
