@@ -83,14 +83,46 @@
                                 <iframe :src="cluster_qualis_gsb" height="500" width="100%" frameBorder="0"></iframe>
                             </v-col>
                         </v-row>
-                        <v-row>
-                            <v-col>
-                                <iframe :src="program_qualis" height="600" width="100%" frameBorder="0"></iframe>
-                            </v-col>
-                            <v-col>
-                                <iframe :src="program_qualis_gsb" height="600" width="100%" frameBorder="0"></iframe>
-                            </v-col>
-                        </v-row>
+                    </v-container>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-card v-if="canRender">
+                    <v-card-title>
+                        <v-col>
+                            <v-text-field
+                                v-model="mainProgram"
+                                color="#424C63"
+                                background-color="white"
+                                placeholder="Analisar programa"
+                                filled
+                                append-icon="mdi-close"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col>
+                            <v-select
+                                :items="activeProgramClusters"
+                                v-model="mainProramCluster"
+                                label="Grupo"
+                                filled
+                                color="#424C63"
+                                background-color="white"
+                            ></v-select>
+                        </v-col>
+                    </v-card-title>
+                    <v-container>
+                        <div v-if="mainProgram != ''">
+                            <v-row>
+                                <v-col>
+                                    <iframe :src="program_qualis" height="600" width="100%" frameBorder="0"></iframe>
+                                </v-col>
+                                <v-col>
+                                    <iframe :src="program_qualis_gsb" height="600" width="100%" frameBorder="0"></iframe>
+                                </v-col>
+                            </v-row>
+                        </div>
                     </v-container>
                 </v-card>
             </v-col>
@@ -113,13 +145,19 @@ export default {
             3 : "cluster_k3",
             4 : "cluster_k4",
             5 : "cluster_k5"
-        }
+        },
+        mainProgram: "",
+        activeProgramClusters: []
     }),
 
     methods: {
         updateGraphs: function(){
+            this.activeProgramClusters = [];
             this.canRender = true;
             this.clusterUrlId = this.clusterUrlIdList[this.numberOfClusters];
+            for(var k = 0; k < this.numberOfClusters; k++){
+                this.activeProgramClusters.push("cluster" + k);
+            }
         }
     },
 
