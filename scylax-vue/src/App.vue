@@ -8,10 +8,8 @@
       app
       permanent
       expand-on-hover
-      color="#58A4B0"
+      color="#424C63"
       dark
-      absolute
-      height="100%"
     >
       <v-list-item>
         <v-list-item-icon>
@@ -56,7 +54,7 @@ export default {
   data: () => ({
     menuItems: [
       {title: "Redes de colaboração", icon: "mdi-lan", componentName: "RedesDeColaboracao"},
-      {title: "Programas de pós-graduação", icon: "mdi-bank", componentName: "ProgPosGrad"},
+      {title: "Pós-graduação", icon: "mdi-bank", componentName: "ProgPosGrad"},
       {title: "Pesquisadores", icon: "mdi-account", componentName: "Pesquisador"}
     ],
 

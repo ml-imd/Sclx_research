@@ -1,7 +1,7 @@
 <template>
     <v-tabs
         v-model="currentTab"
-        background-color="#58A4B0"
+        background-color="#424C63"
         dark
         grow
         height="30px"

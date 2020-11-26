@@ -4,10 +4,31 @@
         class="pa-6"
     >
         <v-row>
+            <v-col>
+                <v-card 
+                    width="100%"
+                    height="100%"
+                    color="#424C63"
+                    dark
+                >
+                    <v-row>
+                        <v-col>
+                            <v-card-title>
+                                Redes de Colaboração
+                            </v-card-title>
+                            <v-card-text>
+                                Selecione uma rede de pesquisadores e analise as produções em comum do conjunto.
+                            </v-card-text>
+                        </v-col>
+                    </v-row>
+                </v-card>
+            </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="11">
                 <v-text-field
                     v-model="searchedAuthor"
-                    color="#58A4B0"
+                    color="#424C63"
                     background-color="white"
                     placeholder=" Adicionar pesquisador"
                     filled
@@ -23,7 +44,7 @@
                     class="mt-2"
                     fab
                     dark
-                    color="#58A4B0"
+                    color="#424C63"
                     @click="addAuthor"
                 >
                     <v-icon>mdi-plus</v-icon>
@@ -35,7 +56,7 @@
                 <v-card
                     v-if="network.length > 0"
                     width="100%"
-                    color="#58A4B0"
+                    color="#424C63"
                 >
                     
                     <v-card-title 
@@ -74,7 +95,7 @@
                 <v-card v-if="network.length > 1">
                     <v-tabs
                         v-model="currentTab"
-                        background-color="#58A4B0"
+                        background-color="#424C63"
                         dark
                         grow
                     >
