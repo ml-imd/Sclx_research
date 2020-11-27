@@ -55,7 +55,7 @@
                                     v-bind="attrs"
                                     v-on="on"
                                     icon
-                                    @click="updateGraphs"
+                                    @click="updateGroupGraphs"
                                 >
                                     <v-icon>mdi-refresh</v-icon>
                                 </v-btn>
@@ -90,36 +90,62 @@
         <v-row>
             <v-col>
                 <v-card v-if="canRender">
-                    <v-card-title>
-                        <v-col>
-                            <v-text-field
-                                v-model="mainProgram"
-                                color="#424C63"
-                                background-color="white"
-                                placeholder="Analisar programa"
-                                filled
-                                append-icon="mdi-close"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col>
-                            <v-select
-                                :items="activeProgramClusters"
-                                v-model="mainProramCluster"
-                                label="Grupo"
-                                filled
-                                color="#424C63"
-                                background-color="white"
-                            ></v-select>
-                        </v-col>
-                    </v-card-title>
-                    <v-container>
-                        <div v-if="mainProgram != ''">
+                    <v-card-actions style="background-color : #424C63">
+                        <v-container>
                             <v-row>
                                 <v-col>
-                                    <iframe :src="program_qualis" height="600" width="100%" frameBorder="0"></iframe>
+                                    <v-text-field
+                                        v-model="mainProgram"
+                                        color="#424C63"
+                                        background-color="white"
+                                        placeholder="Analisar programa"
+                                        filled
+                                        append-icon="mdi-close"
+                                    ></v-text-field>
                                 </v-col>
                                 <v-col>
-                                    <iframe :src="program_qualis_gsb" height="600" width="100%" frameBorder="0"></iframe>
+                                    <v-select
+                                        :items="selectionProgramClusters"
+                                        v-model="mainProgramCluster"
+                                        label="Grupo"
+                                        filled
+                                        color="#424C63"
+                                        background-color="white"
+                                    ></v-select>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="9">
+                                    <v-autocomplete
+                                        color="#424C63"
+                                        filled
+                                        label="Comparar com programas"
+                                        background-color="white"
+                                    >
+                                    </v-autocomplete>
+                                </v-col>
+                                <v-col>
+                                    <v-btn
+                                        color="white"
+                                        large
+                                        height="55"
+                                        @click="updateProgramGraphs"
+                                    >
+                                        Analisar Programa 
+                                        <v-icon >mdi-menu-right</v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-actions>
+                    <v-container>
+                        <div v-if="canRenderProgram">
+                            <v-row>
+                                <v-col>
+                                    <iframe id="program_qualis" :src="program_qualis" height="600" width="100%" frameBorder="0"></iframe>
+                                </v-col>
+                                <v-col>
+                                    <iframe id="program_qualis_sgb" :src="program_qualis_gsb" height="600" width="100%" frameBorder="0"></iframe>
                                 </v-col>
                             </v-row>
                         </div>
@@ -139,25 +165,38 @@ export default {
         canRender: false,
         clusterUrlId: "",
         program: "",
-        program_cluster: "cluster1",
+        mainProgram: "",
         clusterUrlIdList : {
             2 : "cluster_k2",
             3 : "cluster_k3",
             4 : "cluster_k4",
             5 : "cluster_k5"
         },
-        mainProgram: "",
-        activeProgramClusters: []
+        mainProgramCluster: "",
+        selectionProgramClusters: [],
+        compareProgramList: [],
+        urlProgramList: "",
+        canRenderProgram: false,
     }),
 
     methods: {
-        updateGraphs: function(){
-            this.activeProgramClusters = [];
+        updateGroupGraphs: function(){
+            this.selectionProgramClusters = [];
             this.canRender = true;
             this.clusterUrlId = this.clusterUrlIdList[this.numberOfClusters];
             for(var k = 0; k < this.numberOfClusters; k++){
-                this.activeProgramClusters.push("cluster" + k);
+                this.selectionProgramClusters.push("cluster" + k);
             }
+        },
+
+        updateProgramGraphs: function(){
+            if(!this.canRenderProgram){
+                this.canRenderProgram = true;
+            }
+
+            this.urlProgramList = "(";
+            this.urlProgramList += "(input:(language:kuery,query:'programas_nomes.keyword:" + this.mainProgram + "'),label:'" + this.mainProgram + "')";
+            this.urlProgramList += ")";
         }
     },
 
@@ -175,11 +214,11 @@ export default {
         },
 
         program_qualis: function(){
-            return "http://localhost:5601/app/visualize#/edit/f394bf70-2ecc-11eb-a9e4-f3fe9303f5c9?embed=true&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:cluster_k2.keyword,negate:!f,params:(query:" + this.program_cluster + "),type:phrase),query:(match_phrase:(cluster_k2.keyword:" + this.program_cluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(vis:(colors:(A1:%23508642,A2:%239AC48A,A3:%23CCA300,A4:%23F2C96D,B1:%23E0752D,B2:%23E24D42,B3:%23890F02,B4:%230A437C,C%2FNI%2FNP:%233F2B5B))),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Quantidade),schema:metric,type:count),(enabled:!t,id:'2',params:(filters:!((input:(language:kuery,query:'programas_nomes.keyword:CIÊNCIAS DA SAÚDE'),label:'CIÊNCIAS DA SAÚDE'),(input:(language:kuery,query:'programas_nomes.keyword:ENFERMAGEM'),label:ENFERMAGEM))),schema:segment,type:filters),(enabled:!t,id:'3',params:(customLabel:Qualis,field:qualis.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,size:11),schema:group,type:terms)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(filter:!t,rotate:0,show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!f,valueAxis:ValueAxis-1),labels:(show:!f),legendPosition:right,seriesParams:!((data:(id:'1',label:Quantidade),drawLinesBetweenPoints:!t,lineWidth:2,mode:normal,show:!t,showCircles:!t,type:histogram,valueAxis:ValueAxis-1)),thresholdLine:(color:%23E7664C,show:!f,style:full,value:10,width:1),times:!(),type:histogram,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:Quantidade),type:value))),title:program_qualis,type:histogram))"
+            return "http://localhost:5601/app/visualize#/edit/f394bf70-2ecc-11eb-a9e4-f3fe9303f5c9?embed=true&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(vis:(colors:(A1:%23508642,A2:%239AC48A,A3:%23CCA300,A4:%23F2C96D,B1:%23E0752D,B2:%23E24D42,B3:%23890F02,B4:%230A437C,C%2FNI%2FNP:%233F2B5B))),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Quantidade),schema:metric,type:count),(enabled:!t,id:'2',params:(filters:!" + this.urlProgramList + "),schema:segment,type:filters),(enabled:!t,id:'3',params:(customLabel:Qualis,field:qualis.keyword,missingBucket:!f,missingBucketLabel:Missing,order:desc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,size:11),schema:group,type:terms)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(filter:!t,rotate:0,show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!f,valueAxis:ValueAxis-1),labels:(show:!f),legendPosition:right,seriesParams:!((data:(id:'1',label:Quantidade),drawLinesBetweenPoints:!t,lineWidth:2,mode:normal,show:!t,showCircles:!t,type:histogram,valueAxis:ValueAxis-1)),thresholdLine:(color:%23E7664C,show:!f,style:full,value:10,width:1),times:!(),type:histogram,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:Quantidade),type:value))),title:program_qualis,type:histogram))"
         },
 
         program_qualis_gsb: function(){
-            return "http://localhost:5601/app/visualize#/edit/c78238c0-2ec4-11eb-a9e4-f3fe9303f5c9?embed=true&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:cluster_k2.keyword,negate:!f,params:(query:" + this.program_cluster + "),type:phrase),query:(match_phrase:(cluster_k2.keyword:" + this.program_cluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(vis:(colors:(A1:%23508642,A2:%239AC48A,A3:%23CCA300,A4:%23F2C96D,B1:%23E0752D,B2:%23E24D42,B3:%23890F02,B4:%230A437C,Bronze:%2399440A,C%2FNI%2FNP:%233F2B5B,Gold:%23E5AC0E,Silver:%23DEDAF7))),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Quantidade),schema:metric,type:count),(enabled:!t,id:'2',params:(filters:!((input:(language:kuery,query:'programas_nomes.keyword:CIÊNCIAS DA SAÚDE'),label:'CIÊNCIAS DA SAÚDE'),(input:(language:kuery,query:'programas_nomes.keyword:ENFERMAGEM'),label:ENFERMAGEM))),schema:segment,type:filters),(enabled:!t,id:'3',params:(filters:!((input:(language:kuery,query:'qualis.keyword%20:%20%22A1%22%20or%20qualis.keyword%20%0A:%20%22A2%22%20or%20qualis.keyword%20:%20%22A3%22%20or%20qualis.keyword%20:%20%22A4%22'),label:Gold),(input:(language:kuery,query:'qualis.keyword%20:%20%22B1%22%20or%20qualis.keyword%20:%20%22B3%22%20or%20qualis.keyword%20:%20%22B4%22%20or%20qualis.keyword%20:%20%22B2%22%20'),label:Silver),(input:(language:kuery,query:'qualis.keyword%20:%20%22C%2FNI%2FNP%22%20'),label:Bronze))),schema:group,type:filters)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(filter:!t,rotate:0,show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!f,valueAxis:ValueAxis-1),labels:(show:!f),legendPosition:right,seriesParams:!((data:(id:'1',label:Quantidade),drawLinesBetweenPoints:!t,lineWidth:2,mode:normal,show:!t,showCircles:!t,type:histogram,valueAxis:ValueAxis-1)),thresholdLine:(color:%23E7664C,show:!f,style:full,value:10,width:1),times:!(),type:histogram,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:Quantidade),type:value))),title:program_qualis_gsb,type:histogram))"
+            return "http://localhost:5601/app/visualize#/edit/c78238c0-2ec4-11eb-a9e4-f3fe9303f5c9?embed=true&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(vis:(colors:(A1:%23508642,A2:%239AC48A,A3:%23CCA300,A4:%23F2C96D,B1:%23E0752D,B2:%23E24D42,B3:%23890F02,B4:%230A437C,Bronze:%2399440A,C%2FNI%2FNP:%233F2B5B,Gold:%23E5AC0E,Silver:%23DEDAF7))),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Quantidade),schema:metric,type:count),(enabled:!t,id:'2',params:(filters:!" + this.urlProgramList + "),schema:segment,type:filters),(enabled:!t,id:'3',params:(filters:!((input:(language:kuery,query:'qualis.keyword%20:%20%22A1%22%20or%20qualis.keyword%20%0A:%20%22A2%22%20or%20qualis.keyword%20:%20%22A3%22%20or%20qualis.keyword%20:%20%22A4%22'),label:Gold),(input:(language:kuery,query:'qualis.keyword%20:%20%22B1%22%20or%20qualis.keyword%20:%20%22B3%22%20or%20qualis.keyword%20:%20%22B4%22%20or%20qualis.keyword%20:%20%22B2%22%20'),label:Silver),(input:(language:kuery,query:'qualis.keyword%20:%20%22C%2FNI%2FNP%22%20'),label:Bronze))),schema:group,type:filters)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(filter:!t,rotate:0,show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!f,valueAxis:ValueAxis-1),labels:(show:!f),legendPosition:right,seriesParams:!((data:(id:'1',label:Quantidade),drawLinesBetweenPoints:!t,lineWidth:2,mode:normal,show:!t,showCircles:!t,type:histogram,valueAxis:ValueAxis-1)),thresholdLine:(color:%23E7664C,show:!f,style:full,value:10,width:1),times:!(),type:histogram,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:Quantidade),type:value))),title:program_qualis_gsb,type:histogram))"
         }
     }
 }
