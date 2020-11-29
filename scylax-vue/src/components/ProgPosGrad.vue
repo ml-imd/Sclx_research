@@ -118,13 +118,13 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-card v-if="canRender">
+                <v-card v-if="canRender" color="#fafbfd">
                     <v-card-actions style="background-color : #424C63">
                         <v-container>
                             <v-row>
                                 <v-col>
                                     <v-text-field
-                                        v-model="mainProgram"
+                                        v-model="program"
                                         color="#424C63"
                                         background-color="white"
                                         placeholder="Analisar programa"
@@ -159,7 +159,7 @@
                                         large
                                         height="55"
                                         @click="updateProgramGraphs"
-                                        :disabled="(groupSelect == '') || (mainProgram == '')"
+                                        :disabled="(groupSelect == '') || (program == '')"
                                     >
                                         Analisar Programa 
                                         <v-icon >mdi-menu-right</v-icon>
@@ -188,6 +188,12 @@
                                 <v-col>
                                     <h3 class="pl-5">Qualidade de publicações por programa</h3>
                                     <iframe :src="program_qualis_gsb" height="500" width="100%" frameBorder="0"></iframe>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col>
+                                    <h3 class="pl-5">Distribuição de qualis estrato em {{mainProgram}}</h3>
+                                    <iframe :src="program_qualis_estrato" height="500" width="100%" frameBorder="0"></iframe>
                                 </v-col>
                             </v-row>
                         </div>
@@ -238,6 +244,7 @@ export default {
             }
 
             this.mainProgramCluster = this.groupSelect;
+            this.mainProgram = this.program;
 
             this.urlProgramList = "(";
             this.urlProgramList += "(input:(language:kuery,query:'programas_nomes.keyword:" + this.mainProgram + "'),label:'" + this.mainProgram + "')";
@@ -291,7 +298,11 @@ export default {
         },
         
         program_scores: function(){
-            return "http://localhost:5601/app/visualize#/edit/c2a69990-31b2-11eb-8045-b53bd470100c?embed=true&type=metric&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'3',params:(customLabel:'Quartil%20citescore%20m%C3%A9dio',field:quartil_citescore),schema:metric,type:avg),(enabled:!t,id:'4',params:(customLabel:'Percentil%20m%C3%A9dio',field:percentile),schema:metric,type:avg),(enabled:!t,id:'1',params:(customLabel:'Quartil%20percentil%20m%C3%A9dio',field:quartil_percentile),schema:metric,type:avg),(enabled:!t,id:'2',params:(filters:!((input:(language:kuery,query:'programas_nomes.keyword%20:%20%22CI%C3%8ANCIAS%20DA%20SA%C3%9ADE%22%20'),label:'%20CI%C3%8ANCIAS%20DA%20SA%C3%9ADE'))),schema:group,type:filters)),params:(addLegend:!f,addTooltip:!t,metric:(colorSchema:'Green%20to%20Red',colorsRange:!((from:0,to:10000)),invertColors:!f,labels:(show:!t),metricColorMode:None,percentageMode:!f,style:(bgColor:!f,bgFill:%23000,fontSize:60,labelColor:!f,subText:''),useRanges:!f),type:metric),title:program_citescore_metric,type:metric))"
+            return "http://localhost:5601/app/visualize#/edit/c2a69990-31b2-11eb-8045-b53bd470100c?embed=true&type=metric&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'3',params:(customLabel:'Quartil%20citescore%20m%C3%A9dio',field:quartil_citescore),schema:metric,type:avg),(enabled:!t,id:'4',params:(customLabel:'Percentil%20m%C3%A9dio',field:percentile),schema:metric,type:avg),(enabled:!t,id:'1',params:(customLabel:'Quartil%20percentil%20m%C3%A9dio',field:quartil_percentile),schema:metric,type:avg),(enabled:!t,id:'2',params:(filters:!((input:(language:kuery,query:'programas_nomes.keyword%20:" + this.mainProgram + "'),label:'" + this.mainProgram + "'))),schema:group,type:filters)),params:(addLegend:!f,addTooltip:!t,metric:(colorSchema:'Green%20to%20Red',colorsRange:!((from:0,to:10000)),invertColors:!f,labels:(show:!t),metricColorMode:None,percentageMode:!f,style:(bgColor:!f,bgFill:%23000,fontSize:60,labelColor:!f,subText:''),useRanges:!f),type:metric),title:program_citescore_metric,type:metric))"
+        },
+
+        program_qualis_estrato: function(){
+            return "http://localhost:5601/app/visualize#/create?embed=true&type=pie&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + "))),('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:programas_nomes.keyword,negate:!f,params:(query:'" + this.mainProgram + "'),type:phrase),query:(match_phrase:(programas_nomes.keyword:'" + this.mainProgram + "')))),linked:!f,query:(language:kuery,query:''),uiState:(vis:(colors:('0':%233F2B5B,'0.05':%230A437C,'0.2':%23890F02,'0.35':%23EA6460,'0.5':%23F9934E,'0.7':%23F2C96D,'0.8':%23CCA300,'0.9':%239AC48A,'1':%23508642))),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Quantidade),schema:metric,type:count),(enabled:!t,id:'3',params:(field:qualis_estrato,missingBucket:!f,missingBucketLabel:Missing,order:asc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,size:10),schema:segment,type:terms)),params:(addLegend:!t,addTooltip:!t,isDonut:!f,labels:(last_level:!t,show:!f,truncate:100,values:!t),legendPosition:right,type:pie),title:'',type:pie))"
         }
     }
 }
