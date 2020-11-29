@@ -172,7 +172,12 @@
                         <div v-if="canRenderProgram">
                             <v-row>
                                 <v-col>
-                                    <iframe :src="program_citescore" height="500" width="100%" frameBorder="0"></iframe>
+                                    <iframe :src="program_scores" height="300" width="100%" frameBorder="0"></iframe>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col>
+                                    <iframe :src="program_citescore" height="300" width="100%" frameBorder="0"></iframe>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -283,6 +288,10 @@ export default {
 
         program_citescore: function(){
             return "http://localhost:5601/app/visualize#/edit/c2a69990-31b2-11eb-8045-b53bd470100c?embed=true&type=metric&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'3',params:(customLabel:'Citescore%20m%C3%ADnimo',field:citescore),schema:metric,type:min),(enabled:!t,id:'1',params:(customLabel:'Citescore%20m%C3%A9dio',field:citescore),schema:metric,type:avg),(enabled:!t,id:'2',params:(filters:!" + this.urlProgramList + "),schema:group,type:filters),(enabled:!t,id:'4',params:(customLabel:'Citescore%20m%C3%A1ximo',field:citescore),schema:metric,type:max)),params:(addLegend:!f,addTooltip:!t,metric:(colorSchema:'Green%20to%20Red',colorsRange:!((from:0,to:10000)),invertColors:!f,labels:(show:!t),metricColorMode:None,percentageMode:!f,style:(bgColor:!f,bgFill:%23000,fontSize:60,labelColor:!f,subText:''),useRanges:!f),type:metric),title:program_citescore_metric,type:metric))"
+        },
+        
+        program_scores: function(){
+            return "http://localhost:5601/app/visualize#/edit/c2a69990-31b2-11eb-8045-b53bd470100c?embed=true&type=metric&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'3',params:(customLabel:'Quartil%20citescore%20m%C3%A9dio',field:quartil_citescore),schema:metric,type:avg),(enabled:!t,id:'4',params:(customLabel:'Percentil%20m%C3%A9dio',field:percentile),schema:metric,type:avg),(enabled:!t,id:'1',params:(customLabel:'Quartil%20percentil%20m%C3%A9dio',field:quartil_percentile),schema:metric,type:avg),(enabled:!t,id:'2',params:(filters:!((input:(language:kuery,query:'programas_nomes.keyword%20:%20%22CI%C3%8ANCIAS%20DA%20SA%C3%9ADE%22%20'),label:'%20CI%C3%8ANCIAS%20DA%20SA%C3%9ADE'))),schema:group,type:filters)),params:(addLegend:!f,addTooltip:!t,metric:(colorSchema:'Green%20to%20Red',colorsRange:!((from:0,to:10000)),invertColors:!f,labels:(show:!t),metricColorMode:None,percentageMode:!f,style:(bgColor:!f,bgFill:%23000,fontSize:60,labelColor:!f,subText:''),useRanges:!f),type:metric),title:program_citescore_metric,type:metric))"
         }
     }
 }
