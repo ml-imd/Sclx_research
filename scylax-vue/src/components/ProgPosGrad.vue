@@ -265,6 +265,11 @@ export default {
 
             this.urlProgramList = "(";
             this.urlProgramList += "(input:(language:kuery,query:'programas_nomes.keyword:" + this.mainProgram + "'),label:'" + this.mainProgram + "')";
+
+            for(var i = 0; i < this.compareProgramList.length; i++){
+                this.urlProgramList += ",(input:(language:kuery,query:'programas_nomes.keyword:" + this.compareProgramList[i] + "'),label:'" + this.compareProgramList[i] + "')";
+            }
+
             this.urlProgramList += ")";
         }
     },
@@ -314,7 +319,7 @@ export default {
         },
 
         program_citescore: function(){
-            return "http://localhost:5601/app/visualize#/edit/c2a69990-31b2-11eb-8045-b53bd470100c?embed=true&type=metric&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'3',params:(customLabel:'Citescore%20m%C3%ADnimo',field:citescore),schema:metric,type:min),(enabled:!t,id:'1',params:(customLabel:'Citescore%20m%C3%A9dio',field:citescore),schema:metric,type:avg),(enabled:!t,id:'2',params:(filters:!" + this.urlProgramList + "),schema:group,type:filters),(enabled:!t,id:'4',params:(customLabel:'Citescore%20m%C3%A1ximo',field:citescore),schema:metric,type:max)),params:(addLegend:!f,addTooltip:!t,metric:(colorSchema:'Green%20to%20Red',colorsRange:!((from:0,to:10000)),invertColors:!f,labels:(show:!t),metricColorMode:None,percentageMode:!f,style:(bgColor:!f,bgFill:%23000,fontSize:60,labelColor:!f,subText:''),useRanges:!f),type:metric),title:program_citescore_metric,type:metric))"
+            return "http://localhost:5601/app/visualize#/edit/c2a69990-31b2-11eb-8045-b53bd470100c?embed=true&type=metric&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'0922d430-2ec3-11eb-a9e4-f3fe9303f5c9',key:" + this.clusterUrlId + ".keyword,negate:!f,params:(query:" + this.mainProgramCluster + "),type:phrase),query:(match_phrase:(" + this.clusterUrlId + ".keyword:" + this.mainProgramCluster + ")))),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'3',params:(customLabel:'Citescore%20m%C3%ADnimo',field:citescore),schema:metric,type:min),(enabled:!t,id:'1',params:(customLabel:'Citescore%20m%C3%A9dio',field:citescore),schema:metric,type:avg),(enabled:!t,id:'2',params:(filters:!((input:(language:kuery,query:'programas_nomes.keyword:" + this.mainProgram + "'),label:'" + this.mainProgram + "'))),schema:group,type:filters),(enabled:!t,id:'4',params:(customLabel:'Citescore%20m%C3%A1ximo',field:citescore),schema:metric,type:max)),params:(addLegend:!f,addTooltip:!t,metric:(colorSchema:'Green%20to%20Red',colorsRange:!((from:0,to:10000)),invertColors:!f,labels:(show:!t),metricColorMode:None,percentageMode:!f,style:(bgColor:!f,bgFill:%23000,fontSize:60,labelColor:!f,subText:''),useRanges:!f),type:metric),title:program_citescore_metric,type:metric))"
         },
         
         program_scores: function(){
