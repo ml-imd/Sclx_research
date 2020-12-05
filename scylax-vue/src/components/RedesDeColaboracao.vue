@@ -101,7 +101,7 @@
                             Detalhes
                         </v-tab>
                         <v-tab-item>
-                            <RedesAbaDetalhes />
+                            <RedesAbaDetalhes :subNetworkProductions="subNetworkProductions" :authorsProductions="authorsProductions"/>
                         </v-tab-item>
                     </v-tabs>
                 </v-card>
@@ -128,6 +128,7 @@ export default {
         network: [],
         networkCoProductions: [],
         subNetworkProductions: {},
+        authorsProductions: {},
         currentTab: "",
         canRender: false,
         authorsDataset: tabela_autores,
@@ -136,16 +137,17 @@ export default {
 
     methods: {
         analyzeNetwork: function(){
-            var authorsProductions = {}, allSubNetworks = [], snProductionsList = [];
+            this.authorsProductions = {};
+            var allSubNetworks = [], snProductionsList = [];
             this.subNetworkProductions = this.networkCoProductions = {};
 
             for(let i = 0; i < this.network.length; i++){
-                authorsProductions[this.network[i]] = [];
+                this.authorsProductions[this.network[i]] = [];
             }
 
             for(let i = 0; i < this.authorsDataset.length; i++){
-                if(this.authorsDataset[i].nome_normalizado in authorsProductions){
-                    authorsProductions[this.authorsDataset[i].nome_normalizado] = authorsProductions[this.authorsDataset[i].nome_normalizado].concat(String(this.authorsDataset[i].producoes).split(", "));
+                if(this.authorsDataset[i].nome_normalizado in this.authorsProductions){
+                    this.authorsProductions[this.authorsDataset[i].nome_normalizado] = this.authorsProductions[this.authorsDataset[i].nome_normalizado].concat(String(this.authorsDataset[i].producoes).split(", "));
                 }
             }
 
@@ -155,13 +157,13 @@ export default {
                 snProductionsList = []
                 
                 for(let j = 0; j < allSubNetworks[i].length; j++){
-                    snProductionsList.push(authorsProductions[allSubNetworks[i][j]])
+                    snProductionsList.push(this.authorsProductions[allSubNetworks[i][j]])
                 }
 
                 this.subNetworkProductions[allSubNetworks[i]] = snProductionsList.reduce((a, b) => a.filter(c => b.includes(c)));
             }
 
-            this.networkCoProductions = Object.values(authorsProductions).reduce((a, b) => a.filter(c => b.includes(c)));
+            this.networkCoProductions = Object.values(this.authorsProductions).reduce((a, b) => a.filter(c => b.includes(c)));
 
             if(this.networkCoProductions.length > 0){
                 this.canRender = true;
