@@ -98,16 +98,10 @@
                             <RedesAbaResumo :networkCoProductions="networkCoProductions"/>
                         </v-tab-item>
                         <v-tab>
-                            Produções
+                            Detalhes
                         </v-tab>
                         <v-tab-item>
-                            <RedesAbaProducoes />
-                        </v-tab-item>
-                        <v-tab>
-                            Colaboração
-                        </v-tab>
-                        <v-tab-item>
-                            <RedesAbaColaboracao />
+                            <RedesAbaDetalhes />
                         </v-tab-item>
                     </v-tabs>
                 </v-card>
@@ -119,16 +113,14 @@
 <script>
 import autores_nomes from '../assets/autores_nomes.json'
 import tabela_autores from '../assets/tabela_autores_ufrn.json'
-import RedesAbaColaboracao from './RedesAbaColaboracao.vue'
-import RedesAbaProducoes from './RedesAbaProducoes.vue'
+import RedesAbaDetalhes from './RedesAbaDetalhes.vue'
 import RedesAbaResumo from './RedesAbaResumo.vue'
 
 export default {
     name: "RedesDeColaboração",
 
     components: {
-        RedesAbaColaboracao,
-        RedesAbaProducoes,
+        RedesAbaDetalhes,
         RedesAbaResumo
     },
 
