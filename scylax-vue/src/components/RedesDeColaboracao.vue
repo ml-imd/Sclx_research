@@ -125,39 +125,53 @@ export default {
     },
 
     data: () => ({
-        searchedAuthor: "",
         network: [],
         networkCoProductions: [],
+        subNetworkProductions: {},
         currentTab: "",
         canRender: false,
         authorsDataset: tabela_autores,
         researchersList: autores_nomes,
-        authorsProductions: {},
-        count: 0,
     }),
 
     methods: {
         analyzeNetwork: function(){
-            this.authorsProductions = {};
-            this.count = this.authorsDataset.length;
+            var authorsProductions = {}, allSubNetworks = [], snProductionsList = [];
+            this.subNetworkProductions = this.networkCoProductions = {};
 
-            for(var i = 0; i < this.network.length; i++){
-                this.authorsProductions[this.network[i]] = [];
+            for(let i = 0; i < this.network.length; i++){
+                authorsProductions[this.network[i]] = [];
             }
 
-            for(i = 0; i < this.count; i++){
-                if(this.authorsDataset[i].nome_normalizado in this.authorsProductions){
-                    this.authorsProductions[this.authorsDataset[i].nome_normalizado] = this.authorsProductions[this.authorsDataset[i].nome_normalizado].concat(String(this.authorsDataset[i].producoes).split(", "));
+            for(let i = 0; i < this.authorsDataset.length; i++){
+                if(this.authorsDataset[i].nome_normalizado in authorsProductions){
+                    authorsProductions[this.authorsDataset[i].nome_normalizado] = authorsProductions[this.authorsDataset[i].nome_normalizado].concat(String(this.authorsDataset[i].producoes).split(", "));
                 }
             }
 
-            this.networkCoProductions = Object.values(this.authorsProductions).reduce((a, b) => a.filter(c => b.includes(c)));
+            allSubNetworks = this.getCombinations(this.network).filter(a => a.length >= 2 && a.length < this.network.length);
+
+            for(let i = 0; i < allSubNetworks.length; i++){
+                snProductionsList = []
+                
+                for(let j = 0; j < allSubNetworks[i].length; j++){
+                    snProductionsList.push(authorsProductions[allSubNetworks[i][j]])
+                }
+
+                this.subNetworkProductions[allSubNetworks[i]] = snProductionsList.reduce((a, b) => a.filter(c => b.includes(c)));
+            }
+
+            this.networkCoProductions = Object.values(authorsProductions).reduce((a, b) => a.filter(c => b.includes(c)));
 
             if(this.networkCoProductions.length > 0){
                 this.canRender = true;
             } else { 
                 this.canRender = false;
             }
+        },
+
+        getCombinations: function(array){
+            return new Array(1 << array.length).fill().map((e1, i) => array.filter((e2, j) => i & 1 << j));
         }
     },
 }
