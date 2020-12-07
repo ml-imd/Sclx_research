@@ -6,25 +6,41 @@
         <v-row class="mb-3" v-for="(value, key) in subNetworkProductions" :key="key">
             <v-card width="100%">
                 <v-card-title>
-                    <h3 style="color: #424C63">{{ key.split(",").join(" + ") }}</h3>
+                    <h3 style="color: #424C63">Sub-rede: {{ key.split(",").join(" + ") }}</h3>
                 </v-card-title>
 
                 <v-container grid-list-xs>
                     <v-row>
                         <v-col>
                             <v-card color="#424C63">
-                                <h3 class="pl-5" style="color: white">Publicações por qualis</h3>
+                                <v-row>
+                                    <h3 class="pl-5" style="color: white">Publicações por qualis</h3>
+                                    <v-spacer></v-spacer>
+                                    <Help />
+                                </v-row>
                                 <iframe :src="qualis_by_year(value)" height="300" width="100%" frameBorder="0"></iframe>
-                            </v-card>  
-                            <v-card color="#424C63" class="mt-3">
-                                <h3 class="pl-5" style="color: white">Citescore das produções</h3>
+                            </v-card>
+                        </v-col>
+                        <v-col>
+                            <v-card color="#424C63">
+                                <v-row>
+                                    <h3 class="pl-5" style="color: white">Citescore das produções</h3>
+                                    <v-spacer></v-spacer>
+                                    <Help />
+                                </v-row>
                                 <iframe :src="citescore_distribution(value)" height="300" width="100%" frameBorder="0"></iframe>
                             </v-card>
                         </v-col>
+                    </v-row>
+                    <v-row>
                         <v-col>    
                             <v-card color="#424C63">
-                                <h3 class="pl-5" style="color: white">Produções por pesquisador</h3>
-                                <iframe :src="heatmap_productions(key)" height="647" width="100%" frameBorder="0"></iframe>
+                                <v-row>
+                                    <h3 class="pl-5" style="color: white">Produções por pesquisador</h3>
+                                    <v-spacer></v-spacer>
+                                    <Help />
+                                </v-row>
+                                <iframe :src="heatmap_productions(key)" height="300" width="100%" frameBorder="0"></iframe>
                             </v-card>
                         </v-col>
                     </v-row>
@@ -35,8 +51,14 @@
 </template>
 
 <script>
+import Help from './Help.vue'
+
 export default {
     name: "RedesAbaDetalhes",
+
+    components: {
+        Help,
+    },
 
     props: {
         subNetworkProductions: {
@@ -66,7 +88,6 @@ export default {
         },
 
         networkAuthorsProductionsToUrl: function(authors){
-            //(input:(language:kuery,query:'producao.keyword%20:%2210001926%22%20or%20producao.keyword%20:%2210001927%22%20'),label:Autor),(input:(language:kuery,query:'producao.keyword%20:%20%2210001928%22%20'),label:Autor2))
             authors = authors.split(',');
             var str = '';
             for(let i = 0; i < authors.length; i++){
@@ -95,7 +116,7 @@ export default {
         },
 
         heatmap_productions: function(authors){
-            return "http://localhost:5601/app/visualize#/edit/ba8784d0-3735-11eb-8554-d764e573d442?embed=true&type=heatmap&indexPattern=ed2eeb90-3590-11eb-8ebb-8dc5ca511f23&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(),linked:!f,query:(language:kuery,query:''),uiState:(vis:(colors:(),defaultColors:('0%20-%200.2':'rgb(247,251,255)','0.2%20-%200.4':'rgb(208,225,242)','0.4%20-%200.6':'rgb(148,196,223)','0.6%20-%200.8':'rgb(74,152,201)','0.8%20-%201':'rgb(23,100,171)'))),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:'%20'),schema:metric,type:count),(enabled:!t,id:'2',params:(filters:!(" + this.networkAuthorsProductionsToUrl(authors) + "),schema:segment,type:filters)),params:(addLegend:!t,addTooltip:!t,colorSchema:'Yellow%20to%20Red',colorsNumber:5,colorsRange:!((from:0,to:100)),enableHover:!f,invertColors:!f,legendPosition:top,percentageMode:!f,setColorRange:!f,times:!(),type:heatmap,valueAxes:!((id:ValueAxis-1,labels:(color:black,overwriteColor:!f,rotate:0,show:!t),scale:(defaultYExtents:!f,type:linear),show:!f,type:value))),title:network_heatmap_productions,type:heatmap))"
+            return "http://localhost:5601/app/visualize#/create?embed=true&type=histogram&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Quantidade),schema:metric,type:count),(enabled:!t,id:'2',params:(filters:!(" + this.networkAuthorsProductionsToUrl(authors) + "),schema:segment,type:filters)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(filter:!t,rotate:0,show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!f,valueAxis:ValueAxis-1),labels:(show:!t),legendPosition:top,seriesParams:!((data:(id:'1',label:Quantidade),drawLinesBetweenPoints:!t,lineWidth:2,mode:stacked,show:!t,showCircles:!t,type:histogram,valueAxis:ValueAxis-1)),thresholdLine:(color:%23E7664C,show:!f,style:full,value:10,width:1),times:!(),type:histogram,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:Quantidade),type:value))),title:'',type:histogram))"
         }
     },
 }

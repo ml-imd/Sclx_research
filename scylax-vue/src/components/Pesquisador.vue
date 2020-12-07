@@ -21,6 +21,25 @@
                             </v-card-text>
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-container>
+                            <v-expansion-panels flat focusable>
+                                <v-expansion-panel>
+                                    <v-expansion-panel-header color="#424C63" disable-icon-rotate>
+                                        Mais
+                                        <template v-slot:actions>
+                                            <v-icon>
+                                                mdi-plus
+                                            </v-icon>
+                                        </template>
+                                    </v-expansion-panel-header>
+                                    <v-expansion-panel-content color="#424C63">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </v-container>
+                    </v-row>
                 </v-card>
             </v-col>
             <v-col class="d-flex justify-center">
@@ -57,11 +76,11 @@
                                     @click="updateGroupGraphs"
                                     text
                                 >
-                                    Atualizar Grupos
+                                    Atualizar Gráficos
                                     <v-icon class="ml-1" small>mdi-refresh</v-icon>
                                 </v-btn>
                             </template>
-                            <span>Atualizar grupos</span>
+                            <span>Atualizar gráficos</span>
                         </v-tooltip>
                     </v-card-actions>
                 </v-card>
@@ -74,7 +93,11 @@
                         <v-row>
                             <v-col>
                                 <v-card color="#424C63">
-                                    <h3 class="pl-5" style="color: white">Publicações por década por grupo</h3>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">Publicações por década por grupo</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
                                     <iframe :src="total_by_cluster" height="500" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
@@ -82,7 +105,11 @@
                         <v-row>
                             <v-col>
                                 <v-card color="#424C63">
-                                    <h3 class="pl-5" style="color: white">H-index médio por grupo</h3>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">H-index médio por grupo</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
                                     <iframe :src="h_index_average" height="300" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
@@ -90,13 +117,21 @@
                         <v-row>
                             <v-col>
                                 <v-card color="#424C63" height="100%">
-                                    <h3 class="pl-5" style="color: white">Colaboração internacional média por grupo</h3>
-                                    <iframe class="mt-7" :src="average_n_colab" height="300" width="100%" frameBorder="0"></iframe>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">Colaboração internacional média por grupo</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
+                                    <iframe :src="average_n_colab" height="300" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
                             <v-col>
                                 <v-card color="#424C63">
-                                    <h3 class="pl-5" style="color: white">Média de pesquisadores em colaborações internacionais por grupo</h3>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">Média de pesq. em colaborações internacionais por grupo</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
                                     <iframe :src="average_p_colab" height="300" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
@@ -104,13 +139,21 @@
                         <v-row>
                             <v-col>
                                 <v-card color="#424C63">
-                                    <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 1</h3>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 1</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
                                     <iframe :src="researcher_qualis_d1" height="500" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
                             <v-col>
                                 <v-card color="#424C63">
-                                    <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 2</h3>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 2</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
                                     <iframe :src="researcher_qualis_d2" height="500" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
@@ -118,13 +161,21 @@
                         <v-row>
                             <v-col>
                                 <v-card color="#424C63">
-                                    <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 3</h3>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 3</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
                                     <iframe :src="researcher_qualis_d3" height="500" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
                             <v-col>
                                 <v-card color="#424C63">
-                                    <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 4</h3>
+                                    <v-row>
+                                        <h3 class="pl-5" style="color: white">Publicações por grupo por qualis na década 4</h3>
+                                        <v-spacer></v-spacer>
+                                        <Help />
+                                    </v-row>
                                     <iframe :src="researcher_qualis_d4" height="500" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
@@ -171,7 +222,11 @@
                             <v-row>
                                 <v-col>
                                     <v-card color="#424C63">
-                                        <h3 class="pl-5" style="color: white">Publicações por década</h3>
+                                        <v-row>
+                                            <h3 class="pl-5" style="color: white">Publicações por década</h3>
+                                            <v-spacer></v-spacer>
+                                            <Help />
+                                        </v-row>
                                         <iframe :src="single_researcher_total_prod" height="500" width="100%" frameBorder="0"></iframe>
                                     </v-card>
                                 </v-col>
@@ -186,13 +241,21 @@
                             <v-row>
                                 <v-col>
                                     <v-card color="#424C63">
-                                        <h3 class="pl-5" style="color: white">Publicações por qualis na década 1</h3>
+                                        <v-row>
+                                            <h3 class="pl-5" style="color: white">Publicações por qualis na década 1</h3>
+                                            <v-spacer></v-spacer>
+                                            <Help />
+                                        </v-row>
                                         <iframe :src="single_researcher_qualis_d1" height="500" width="100%" frameBorder="0"></iframe>
                                     </v-card>
                                 </v-col>
                                 <v-col>
                                     <v-card color="#424C63">
-                                        <h3 class="pl-5" style="color: white">Publicações por qualis na década 2</h3>
+                                        <v-row>
+                                            <h3 class="pl-5" style="color: white">Publicações por qualis na década 2</h3>
+                                            <v-spacer></v-spacer>
+                                            <Help />
+                                        </v-row>
                                         <iframe :src="single_researcher_qualis_d2" height="500" width="100%" frameBorder="0"></iframe>
                                     </v-card>
                                 </v-col>
@@ -200,13 +263,21 @@
                             <v-row>
                                 <v-col>
                                     <v-card color="#424C63">
-                                        <h3 class="pl-5" style="color: white">Publicações por qualis na década 3</h3>
+                                        <v-row>
+                                            <h3 class="pl-5" style="color: white">Publicações por qualis na década 3</h3>
+                                            <v-spacer></v-spacer>
+                                            <Help />
+                                        </v-row>
                                         <iframe :src="single_researcher_qualis_d3" height="500" width="100%" frameBorder="0"></iframe>
                                     </v-card>
                                 </v-col>
                                 <v-col>
                                     <v-card color="#424C63">
-                                        <h3 class="pl-5" style="color: white">Publicações por qualis na década 4</h3>
+                                        <v-row>
+                                            <h3 class="pl-5" style="color: white">Publicações por qualis na década 4</h3>
+                                            <v-spacer></v-spacer>
+                                            <Help />
+                                        </v-row>
                                         <iframe :src="single_researcher_qualis_d4" height="500" width="100%" frameBorder="0"></iframe>
                                     </v-card>
                                 </v-col>
@@ -222,9 +293,14 @@
 
 <script>
 import autores_nomes from '../assets/autores_nomes.json'
+import Help from './Help.vue'
 
 export default {
     name: "Pesquisador",
+
+    components: {
+        Help,
+    },
 
     data: () => ({
         numberOfClusters: 2,

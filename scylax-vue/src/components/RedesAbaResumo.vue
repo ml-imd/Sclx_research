@@ -17,25 +17,41 @@
                 <v-row>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Total de publicações</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Total de publicações</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="total_prod" height="300" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white; font-size: 18px">Média de publicações por ano</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white; font-size: 18px">Média de publi. por ano</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="average_prod_by_year" height="300" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Intervalo de atividade</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Intervalo de atividade</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="activity_interval" height="300" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Citescore médio</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Citescore médio</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="average_citescore" height="300" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
@@ -43,13 +59,21 @@
                 <v-row>
                     <v-col cols="7">
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Publicações por tipo por ano</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Publicações por tipo por ano</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="total_by_year" height="500" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Publicações por tipo</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Publicações por tipo</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="total_by_type" height="500" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
@@ -57,13 +81,21 @@
                 <v-row>
                     <v-col cols="5">
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Publicações por qualis</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Publicações por qualis</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="total_qualis" height="500" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Publicações por qualis por ano</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Publicações por qualis por ano</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="qualis_by_year" height="500" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
@@ -78,7 +110,11 @@
                 <v-row>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Colaborações internacionais por autor</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Colaborações internacionais por autor</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="n_colab_by_author" height="500" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
@@ -86,7 +122,11 @@
                 <v-row>
                     <v-col>
                         <v-card color="#424C63">
-                            <h3 class="pl-5" style="color: white">Pesquisadores em colaborações internacionais</h3>
+                            <v-row>
+                                <h3 class="pl-5" style="color: white">Pesquisadores em colaborações internacionais</h3>
+                                <v-spacer></v-spacer>
+                                <Help />
+                            </v-row>
                             <iframe :src="p_colab_by_author" height="500" width="100%" frameBorder="0"></iframe>
                         </v-card>
                     </v-col>
@@ -97,8 +137,14 @@
 </template>
 
 <script>
+import Help from './Help.vue'
+
 export default {
     name: "RedesAbaResumo",
+
+    components: {
+        Help,
+    },
 
     props: {
         networkCoProductions: {
