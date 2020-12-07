@@ -95,7 +95,7 @@
                             Resumo
                         </v-tab>
                         <v-tab-item>
-                            <RedesAbaResumo :networkCoProductions="networkCoProductions"/>
+                            <RedesAbaResumo :networkCoProductions="networkCoProductions" :authorsProductions="authorsProductions"/>
                         </v-tab-item>
                         <v-tab>
                             Detalhes
