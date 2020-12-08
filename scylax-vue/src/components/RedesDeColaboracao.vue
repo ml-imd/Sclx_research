@@ -118,7 +118,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-card v-if="canRender">
+                <v-card v-if="canRender" :key="key">
                     <v-tabs
                         v-model="currentTab"
                         background-color="#424C63"
@@ -159,6 +159,7 @@ export default {
     },
 
     data: () => ({
+        key: 0,
         network: [],
         networkCoProductions: [],
         subNetworkProductions: {},
@@ -171,6 +172,7 @@ export default {
 
     methods: {
         analyzeNetwork: function(){
+            this.key++;
             this.authorsProductions = {};
             var allSubNetworks = [], snProductionsList = [];
             this.subNetworkProductions = this.networkCoProductions = {};

@@ -19,19 +19,21 @@
       </v-list-item>
       <v-divider></v-divider>
       <v-list dense>
-        <v-list-item 
-          v-for="(item, index) in menuItems" 
-          :key="index"
-          link
-          @click="selectedTab = item.componentName"
-        >
-          <v-list-item-icon>
-            <v-icon>{{item.icon}}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{item.title}}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-item-group>
+          <v-list-item 
+            v-for="(item, index) in menuItems" 
+            :key="index"
+            link
+            @click="selectedTab = item.componentName"
+          >
+            <v-list-item-icon>
+              <v-icon>{{item.icon}}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{item.title}}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
   </v-app>
