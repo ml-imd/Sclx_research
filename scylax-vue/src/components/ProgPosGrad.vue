@@ -48,7 +48,22 @@
                     color="#424C63"
                     dark
                 >
-                    <v-card-title class="justify-center">
+                    <div class="text-end mt-1 mr-1">
+                        <v-tooltip bottom color="white">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                dark
+                                v-bind="attrs"
+                                v-on="on"
+                                small
+                                >
+                                mdi-help
+                                </v-icon>
+                            </template>
+                            <span style="color:black">Podemos alterar o número de grupos que estamos trabalhando utilizando o '+' e o '-'. Devemos atualizar os gráficos ao final desta operação.</span>
+                        </v-tooltip>
+                    </div>
+                    <v-card-title class="justify-center pt-0">
                         Número de grupos
                     </v-card-title>
                     <v-card-actions class="justify-center">
@@ -67,21 +82,14 @@
                         </v-btn>
                     </v-card-actions>
                     <v-card-actions class="justify-center">
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    dark
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    @click="updateGroupGraphs"
-                                    text
-                                >
-                                    Atualizar Gráficos
-                                    <v-icon class="ml-1" small>mdi-refresh</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Atualizar gráficos</span>
-                        </v-tooltip>
+                        <v-btn
+                            dark
+                            @click="updateGroupGraphs"
+                            text
+                        >
+                            Atualizar Gráficos
+                            <v-icon class="ml-1" small>mdi-refresh</v-icon>
+                        </v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -155,6 +163,21 @@
         <v-row>
             <v-col>
                 <v-card v-if="canRender" width="100%" color="#fafbfd">
+                    <div class="text-end" style="background-color : #424C63">
+                        <v-tooltip bottom color="white">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                dark
+                                v-bind="attrs"
+                                v-on="on"
+                                small
+                                >
+                                mdi-help
+                                </v-icon>
+                            </template>
+                            <span style="color:black">Para analisar um programa basta digitar seu nome no campo 'analisar programa', escolher um grupo e clicar em 'Analisar Programa'. Se o campo ‘comparar com programas’ estiver vazio, nenhuma comparação será realizada, caso contrário, será realizada uma comparação entre os programas escolhidos.</span>
+                        </v-tooltip>
+                    </div>
                     <v-card-actions style="background-color : #424C63">
                         <v-container>
                             <v-row>

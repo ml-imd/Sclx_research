@@ -21,9 +21,36 @@
           Ajuda
         </v-card-title>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
+        <v-carousel :show-arrows="false">
+          <v-carousel-item>
+            <v-card-text style="color: black">
+              Para mudar a cor de uma agregação, clique na legenda e escolha uma cor.
+              <v-divider></v-divider>
+              <v-img src="@/assets/help1.png"></v-img>
+            </v-card-text>
+          </v-carousel-item>
+          <v-carousel-item>
+            <v-card-text style="color: black">
+              Para remover uma agregação da exibição no gráfico, selecione o item na legenda e clique no menos.
+              <v-divider></v-divider>
+              <v-img src="@/assets/help2.png"></v-img>
+            </v-card-text>
+          </v-carousel-item>
+          <v-carousel-item>
+            <v-card-text style="color: black">
+              Para visualizar apenas a agregação desejada, clique nela no gráfico ou clique na legenda e no mais.
+              <v-divider></v-divider>
+              <v-img src="@/assets/help3.png"></v-img>
+            </v-card-text>
+          </v-carousel-item>
+          <v-carousel-item>
+            <v-card-text style="color: black">
+              Podemos refinar o nosso gráfico utilizando filtros. Ao criar um filtro estaremos exibindo um subconjunto dos dados exibidos.
+              <v-divider></v-divider>
+              <v-img src="@/assets/help4.png"></v-img>
+            </v-card-text>
+          </v-carousel-item>
+        </v-carousel>
       </v-card>
     </v-dialog>
   </div>
@@ -33,10 +60,8 @@
 export default {
     name: 'Help',    
 
-    data () {
-        return {
-        dialog: false,
-        }
-    },
+    data: () => ({
+      dialog: false,
+    }),
 }
 </script>

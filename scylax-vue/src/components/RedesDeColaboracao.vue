@@ -11,9 +11,24 @@
                     color="#424C63"
                     dark
                 >
+                    <div class="text-end" style="background-color : #424C63">
+                        <v-tooltip bottom color="white">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon
+                                dark
+                                v-bind="attrs"
+                                v-on="on"
+                                small
+                                >
+                                mdi-help
+                                </v-icon>
+                            </template>
+                            <span style="color:black">Para fazer uma análise de uma rede de colaboração você deve adicionar o nome dos pesquisadores e clicar em analisar rede.</span>
+                        </v-tooltip>
+                    </div>
                     <v-row>
                         <v-col>
-                            <v-card-title>
+                            <v-card-title class="pt-0">
                                 Redes de Colaboração
                             </v-card-title>
                             <v-card-text>
@@ -170,7 +185,7 @@ export default {
                 }
             }
 
-            allSubNetworks = this.getCombinations(this.network).filter(a => a.length >= 2 && a.length < this.network.length);
+            allSubNetworks = this.getCombinations(this.network).filter(a => a.length >= 2);
 
             for(let i = 0; i < allSubNetworks.length; i++){
                 snProductionsList = []
