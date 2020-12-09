@@ -40,16 +40,15 @@
                         <v-container>
                             <v-expansion-panels flat focusable>
                                 <v-expansion-panel>
-                                    <v-expansion-panel-header color="#424C63" disable-icon-rotate>
+                                    <v-expansion-panel-header color="#424C63">
                                         Mais
-                                        <template v-slot:actions>
-                                            <v-icon>
-                                                mdi-plus
-                                            </v-icon>
-                                        </template>
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content color="#424C63">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                        <p>Uma rede de colaboração é dada por um grupo de autores que possui pelo menos uma publicação em comum. Além desse conceito, também é utilizado o conceito de sub-rede, que compreende qualquer subconjunto entre os autores que compõem uma rede de colaboração.</p>
+
+                                        <p>Esta funcionalidade objetiva analisar qualitativamente uma rede de colaboração e também identificar seus pontos mais fortes e menos fortes. Isso é feito através dos índices dos autores que compõem uma rede e também através dos índices das publicações produzidas pela rede.</p>
+
+                                        <p>No sistema, a funcionalidade foi dividida em três partes: resumo - produção; resumo - colaboração; e detalhes. Na primeira, resumo - produção, são exibidos os dados gerais da rede como um todo. Na segunda, resumo - colaboração, são exibidas informações relacionadas à colaborações internacionais com participação da rede. Na terceira e última parte, detalhes, são detalhadas informações relativas às sub-redes possíveis para a rede de colaboração em questão.</p>
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
                             </v-expansion-panels>

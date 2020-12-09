@@ -29,7 +29,7 @@
                                         Mais
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content color="#424C63">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                        A produção de um programa de pós-graduação é composta por todas as publicações vinculadas a autores que pertencem a certo programa de pós-graduação. A base de dados utilizada para esta análise foi construída utilizando os dados de cada pesquisa científica, seus autores, métricas relacionadas e os programas aos quais a pesquisa em questão está associada. Sobre esses dados foram executadas técnicas de agrupamento, e então, utilizados os grupos gerados como fonte de informação para a construção dos gráficos.
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
                             </v-expansion-panels>

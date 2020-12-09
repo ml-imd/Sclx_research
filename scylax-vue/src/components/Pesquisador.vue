@@ -14,7 +14,7 @@
                     <v-row>
                         <v-col>
                             <v-card-title>
-                                Análise de Pesquisadores
+                                Análise de Produção Científica de Pesquisadores
                             </v-card-title>
                             <v-card-text>
                                 Agrupe pesquisadores e observe, com foco nas produções científicas e nos índices de qualidade através do tempo, qual o posicionamento de um pesquisador ou agrupamento frente a outros.
@@ -25,16 +25,11 @@
                         <v-container>
                             <v-expansion-panels flat focusable>
                                 <v-expansion-panel>
-                                    <v-expansion-panel-header color="#424C63" disable-icon-rotate>
+                                    <v-expansion-panel-header color="#424C63">
                                         Mais
-                                        <template v-slot:actions>
-                                            <v-icon>
-                                                mdi-plus
-                                            </v-icon>
-                                        </template>
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content color="#424C63">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                        A análise de produção científica de pesquisador compreende um grupo de informações recuperadas sobre os dados de toda a pesquisa de um dado pesquisador. Para que fosse possível analisar cada pesquisador de forma comparativa, foram utilizadas técnicas não-supervisionadas de Aprendizado de Máquina que, ao final, retornam os dados de forma agrupada. Dessa forma, é possível localizar o pesquisador dentro de um grupo e, ao observar as características gerais do grupo, perceber como está colocado o pesquisador em questão.
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
                             </v-expansion-panels>
