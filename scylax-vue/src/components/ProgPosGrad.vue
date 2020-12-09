@@ -25,13 +25,8 @@
                         <v-container>
                             <v-expansion-panels flat focusable>
                                 <v-expansion-panel>
-                                    <v-expansion-panel-header color="#424C63" disable-icon-rotate>
+                                    <v-expansion-panel-header color="#424C63">
                                         Mais
-                                        <template v-slot:actions>
-                                            <v-icon>
-                                                mdi-plus
-                                            </v-icon>
-                                        </template>
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content color="#424C63">
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -106,7 +101,7 @@
                                         <v-spacer></v-spacer>
                                         <Help />
                                     </v-row>
-                                    <iframe :src="prog_per_cluster" height="200" width="100%" frameBorder="0"></iframe>
+                                    <iframe :src="prog_per_cluster" height="300" width="100%" frameBorder="0"></iframe>
                                 </v-card>
                             </v-col>
                         </v-row>
@@ -373,7 +368,7 @@ export default {
         },
 
         prog_per_cluster: function(){
-            return "http://localhost:5601/app/visualize#/create?embed=true&type=metric&indexPattern=0922d430-2ec3-11eb-a9e4-f3fe9303f5c9&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Programas,field:programas.keyword),schema:metric,type:cardinality),(enabled:!t,id:'2',params:(field:" + this.clusterUrlId + ".keyword,missingBucket:!f,missingBucketLabel:Missing,order:asc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,size:5),schema:group,type:terms)),params:(addLegend:!f,addTooltip:!t,metric:(colorSchema:'Green%20to%20Red',colorsRange:!((from:0,to:10000)),invertColors:!f,labels:(show:!t),metricColorMode:None,percentageMode:!f,style:(bgColor:!f,bgFill:%23000,fontSize:" + this.fontSize*2 + ",labelColor:!f,subText:''),useRanges:!f),type:metric),title:'',type:metric))"
+            return "http://localhost:5601/app/visualize#/create?embed=true&type=histogram&indexPattern=ed2eeb90-3590-11eb-8ebb-8dc5ca511f23&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(filters:!(),linked:!f,query:(language:kuery,query:''),uiState:(),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:Quantidade,field:programas.keyword),schema:metric,type:cardinality),(enabled:!t,id:'2',params:(customLabel:Grupos,field:" + this.clusterUrlId + ".keyword,missingBucket:!f,missingBucketLabel:Missing,order:asc,orderBy:_key,otherBucket:!f,otherBucketLabel:Other,size:5),schema:segment,type:terms)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(filter:!t,rotate:0,show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!f,valueAxis:ValueAxis-1),labels:(show:!t),legendPosition:right,seriesParams:!((data:(id:'1',label:Quantidade),drawLinesBetweenPoints:!t,lineWidth:2,mode:normal,show:!t,showCircles:!t,type:histogram,valueAxis:ValueAxis-1)),thresholdLine:(color:%23E7664C,show:!f,style:full,value:10,width:1),times:!(),type:histogram,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(mode:normal,type:linear),show:!t,style:(),title:(text:Quantidade),type:value))),title:'',type:histogram))"
         },
 
         //PROGRAMAS SECAO DOIS
