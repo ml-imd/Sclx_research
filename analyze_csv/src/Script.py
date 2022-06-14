@@ -82,52 +82,55 @@ def writeData(file_name, method, slt_score, db_score, k = '-', seed = '-'):
     file.close()
 
 
-# In[7]:
+# In[11]:
 
 
 def analyze(path, method, file_name, parameters = {}, k_range = None, seed_values = None, label_col = None, export_dataset = False):
     dataset = readData(path, label_col)
-    if(k_range is not None and seed_values is not None):
-        for x in range(k_range[0], k_range[1]):
-            if(method == "SpectralBiclustering"):
-                parameters["n_clusters"] = (x, dataset.shape[1])
-            elif(method == "GaussianMixture"):
-                parameters["n_components"] = x;
-            else:
+    try:
+        if(k_range is not None and seed_values is not None):
+            for x in range(k_range[0], k_range[1]):
+                if(method == "SpectralBiclustering"):
+                    parameters["n_clusters"] = (x, dataset.shape[1])
+                elif(method == "GaussianMixture"):
+                    parameters["n_components"] = x;
+                else:
+                    parameters["n_clusters"] = x
+                for y in seed_values:
+                    parameters["random_state"] = y
+                    cluster_method = cluster(method, parameters)
+                    cluster_method.fit(dataset)
+                    if(method == "SpectralBiclustering" or method == "SpectralCoclustering"):
+                        scores = getScores(dataset, cluster_method.row_labels_)
+                    elif(method == "GaussianMixture"):
+                        scores = getScores(dataset, cluster_method.predict(dataset))
+                    else:
+                        scores = getScores(dataset, cluster_method.labels_)
+                    writeData(file_name, method, k = str(x), seed = str(y), slt_score = str(scores[0]), db_score = str(scores[1]))
+        elif(k_range is not None and seed_values is None):
+            for x in range(k_range[0], k_range[1]):
                 parameters["n_clusters"] = x
+                cluster_method = cluster(method, parameters)
+                cluster_method.fit(dataset)
+                scores = getScores(dataset, cluster_method.labels_)
+                writeData(file_name, method, k = str(x), slt_score = str(scores[0]), db_score = str(scores[1]))
+        elif(k_range is None and seed_values is not None):
             for y in seed_values:
                 parameters["random_state"] = y
                 cluster_method = cluster(method, parameters)
                 cluster_method.fit(dataset)
-                if(method == "SpectralBiclustering" or method == "SpectralCoclustering"):
-                    scores = getScores(dataset, cluster_method.row_labels_)
-                elif(method == "GaussianMixture"):
-                    scores = getScores(dataset, cluster_method.predict(dataset))
-                else:
-                    scores = getScores(dataset, cluster_method.labels_)
-                writeData(file_name, method, k = str(x), seed = str(y), slt_score = str(scores[0]), db_score = str(scores[1]))
-    elif(k_range is not None and seed_values is None):
-        for x in range(k_range[0], k_range[1]):
-            parameters["n_clusters"] = x
+                scores = getScores(dataset, cluster_method.labels_)
+                writeData(file_name, method, seed = str(y), slt_score = str(scores[0]), db_score = str(scores[1]))
+        else:
             cluster_method = cluster(method, parameters)
             cluster_method.fit(dataset)
             scores = getScores(dataset, cluster_method.labels_)
-            writeData(file_name, method, k = str(x), slt_score = str(scores[0]), db_score = str(scores[1]))
-    elif(k_range is None and seed_values is not None):
-        for y in seed_values:
-            parameters["random_state"] = y
-            cluster_method = cluster(method, parameters)
-            cluster_method.fit(dataset)
-            scores = getScores(dataset, cluster_method.labels_)
-            writeData(file_name, method, seed = str(y), slt_score = str(scores[0]), db_score = str(scores[1]))
-    else:
-        cluster_method = cluster(method, parameters)
-        cluster_method.fit(dataset)
-        scores = getScores(dataset, cluster_method.labels_)
-        writeData(file_name, method, slt_score = str(scores[0]), db_score = str(scores[1]))
+            writeData(file_name, method, slt_score = str(scores[0]), db_score = str(scores[1]))
+    except MemoryError:
+        print("MemoryError in " + path)
 
 
-# In[8]:
+# In[12]:
 
 
 def export(path, method, k = None, seed = None, label_col = None, parameters = {}):
@@ -157,17 +160,17 @@ def export(path, method, k = None, seed = None, label_col = None, parameters = {
     dataframe.to_csv(file_name, index = False)
 
 
-# In[9]:
+# In[19]:
 
 
 def analyzeAll(path, k_range, seed_values, label_col = None):
     file_name = fileNameFromPath(path) + '_' + 'k' + str(k_range) +'_' + 'seed' + str(seed_values) + '.csv'
     have_none = ["AffinityPropagation", "DBSCAN", "OPTICS", "MeanShift"]
     have_k = ["AgglomerativeClustering", "Birch"]
-    have_seed_and_k = ["KMeans", "MiniBatchKMeans", "SpectralBiclustering", "SpectralCoclustering", "GaussianMixture"]
+    have_seed_and_k = ["KMeans", "MiniBatchKMeans", "GaussianMixture"]
     
     for method in have_seed_and_k:
-        analyze(path, method, file_name, k_range = k_range, seed_values = seed_values, label_col = label_col)
+        analyze(path, method, file_name, k_range = k_range, seed_values = seed_values, label_col = label_col, parameters = {})
     for method in have_k:
         analyze(path, method, file_name, k_range = k_range, label_col = label_col, parameters = {})
     for method in have_none:

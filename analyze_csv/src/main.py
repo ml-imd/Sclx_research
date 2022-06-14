@@ -16,9 +16,10 @@ def main(task, path, params, opt = {}):
     tasks[task](path, *params, **opt)
 
 
-# In[5]:
+# In[1]:
 
 
-main("analyzeAll", "iris.csv", [(2,6), (1,5)], {"label_col" : "variety"})
-main("export", "iris.csv", ["KMeans"], {"k" : 3, "seed" : 5, "label_col" : "variety"})
+#main("analyzeAll", "iris.csv", [(2,3), (1,)], {"label_col" : "variety"})
+#for k in range(2,11):
+#    main("export", "base_v1.csv", ["AgglomerativeClustering"], {"k" : k})
 
