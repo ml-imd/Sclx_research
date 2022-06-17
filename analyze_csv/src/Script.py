@@ -165,7 +165,7 @@ def export(path, method, k = None, seed = None, label_col = None, parameters = {
 
 def analyzeAll(path, k_range, seed_values, label_col = None):
     file_name = fileNameFromPath(path) + '_' + 'k' + str(k_range) +'_' + 'seed' + str(seed_values) + '.csv'
-    have_none = ["AffinityPropagation", "DBSCAN", "OPTICS", "MeanShift"]
+    have_none = ["DBSCAN", "OPTICS", "MeanShift"]
     have_k = ["AgglomerativeClustering", "Birch"]
     have_seed_and_k = ["KMeans", "MiniBatchKMeans", "GaussianMixture"]
     
