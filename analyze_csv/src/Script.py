@@ -82,7 +82,7 @@ def writeData(file_name, method, slt_score, db_score, k = '-', seed = '-'):
     file.close()
 
 
-# In[11]:
+# In[7]:
 
 
 def analyze(path, method, file_name, parameters = {}, k_range = None, seed_values = None, label_col = None, export_dataset = False):
@@ -130,7 +130,7 @@ def analyze(path, method, file_name, parameters = {}, k_range = None, seed_value
         print("MemoryError in " + path)
 
 
-# In[12]:
+# In[17]:
 
 
 def export(path, method, k = None, seed = None, label_col = None, parameters = {}):
@@ -158,9 +158,11 @@ def export(path, method, k = None, seed = None, label_col = None, parameters = {
         dataframe["cluster"] = cluster_method.labels_
         
     dataframe.to_csv(file_name, index = False)
+    
+    parameters.clear()
 
 
-# In[19]:
+# In[13]:
 
 
 def analyzeAll(path, k_range, seed_values, label_col = None):
